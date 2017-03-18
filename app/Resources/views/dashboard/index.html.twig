@@ -4,5 +4,8 @@
 
 {% block body %}
 	<h1>Dashboard</h1>
-	<p>Your lucky number is {{ number }}</p>
+	<ol>
+		{% for value in downloaded_versions %}
+			<li>{{ value }}</li>
+		{% endfor %}
 {% endblock %}
