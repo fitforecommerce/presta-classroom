@@ -4,8 +4,10 @@
 
 {% block body %}
 	<h1>Download</h1>
-	<ul>
+	<ul class="list-group">
 		{% for value in versions %}
-			<li>{{ value }}</li>
+			<li class="list-group-item">
+				{{ value }}
+			</li>
 		{% endfor %}
 {% endblock %}
