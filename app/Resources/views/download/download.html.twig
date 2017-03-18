@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Download{% endblock %}
+
+{% block body %}
+	<h1>Download</h1>
+	<ul>
+		{% for value in versions %}
+			<li>{{ value }}</li>
+		{% endfor %}
+{% endblock %}

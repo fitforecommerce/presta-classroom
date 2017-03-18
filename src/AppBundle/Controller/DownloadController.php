@@ -6,18 +6,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Model\Downloader;
 
-class DashboardController extends Controller
+class DownloadController extends Controller
 {
 	private $downloader;
     /**
-     * @Route("/dashboard")
+     * @Route("/download")
      */
-    public function showDashboards()
+    public function showAvailableDownloads()
     {
         $dv = $this->downloader()->available_versions();
         return $this->render(
-			'dashboard/index.html.twig', 
-			array('downloaded_versions' => $dv)
+			'download/download.html.twig', 
+			array('versions' => $dv)
 		);
     }
 	private function downloader()

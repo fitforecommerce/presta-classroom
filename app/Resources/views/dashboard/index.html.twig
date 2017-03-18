@@ -4,7 +4,8 @@
 
 {% block body %}
 	<h1>Dashboard</h1>
-	<ol>
+	<h2>Downloaded versions</h2>
+	<ul>
 		{% for value in downloaded_versions %}
 			<li>{{ value }}</li>
 		{% endfor %}

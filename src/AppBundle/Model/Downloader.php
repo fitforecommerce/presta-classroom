@@ -37,6 +37,10 @@ class Downloader {
 		$this->set_status(Install::SUCCESS);
 		return true;
 	}
+	public function available_versions()
+	{
+		return array_keys($this->download_urls());
+	}
 	public function status()
 	{
 		return $this->status;
@@ -88,9 +92,7 @@ class Downloader {
 	{
 		$path  = realpath(dirname(__FILE__)."/../../../web");
 		$path .= "/presta_versions_download";
-		echo "real path: $path";
 		return $path;
-		return realpath(__FILE__)."/presta_versions_download";
 	}
 	private function download_target_file($version_str)
 	{
@@ -113,9 +115,5 @@ class Downloader {
 	{
 		$v = $this->available_versions();
 		return end($v);
-	}
-	private function available_versions()
-	{
-		return array_keys($this->download_urls());
 	}
 }
