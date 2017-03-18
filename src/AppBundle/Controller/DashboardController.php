@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DashboardController extends Controller
 {
     /**
-	 * @Route("/", name="homepage")
      * @Route("/dashboard")
      */
     public function numberAction()
