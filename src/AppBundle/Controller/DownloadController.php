@@ -36,7 +36,8 @@ class DownloadController extends Controller
 				'status_code' => $stat,
 				'status_cssclass' => $this->css_class_for_code($stat),
 				'status_message' => $this->downloader()->status()['msg'],
-				'version' => $version
+				'version' => $version,
+				'versions' => $this->downloader()->available_versions()
 			)
 		);
 	}

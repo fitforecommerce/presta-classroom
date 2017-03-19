@@ -3,21 +3,11 @@
 {% block title %}Download{% endblock %}
 
 {% block body %}
+
 	<h1>Downloadable Versions</h1>
-	<ul class="list-group">
-		{% for value in versions %}
-			<li class="list-group-item">
-				{{ value }}
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						<a href="{{ path('download_version', {'version': value}) }}">
-							<i class="fa fa-download"></i>
-						</a>
-						&nbsp;
-						<a href="{{ path('download_version', {'version': value}) }}">
-						Download
-						</a>
-					</button>
-			</li>
-		{% endfor %}
-	</ul>
+
+	{% block status %}{% endblock %}
+
+	{% include 'download/available_versions_list.html.twig' %}
+
 {% endblock %}

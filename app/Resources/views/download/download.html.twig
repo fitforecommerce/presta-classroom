@@ -1,10 +1,7 @@
-{% extends 'base.html.twig' %}
+{% extends 'download/available_versions.html.twig' %}
 
-{% block title %}Download{% endblock %}
-
-{% block body %}
-	<h1>Downloading {{ version }}</h1>
-
+{% block status %}
 	<div class="alert {{ status_cssclass }}" role="alert">{{ status_message }}</div>
+
 
 {% endblock %}
