@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Download{% endblock %}
+
+{% block body %}
+	<h1>Downloadable Versions</h1>
+	<ul class="list-group">
+		{% for value in versions %}
+			<li class="list-group-item">
+				{{ value }}
+				<a href="/download/{{ value  }}"><span class="fa-download"></span>Download</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
