@@ -8,11 +8,9 @@ use AppBundle\Model\Downloader;
 
 class DownloadController extends Controller
 {
-	const VOID 		= 0;
-	const SUCCESS 	= 1;
-	const ERROR		= 2;
 
 	private $downloader;
+
     /**
 	 * @Route("/download")
      */
@@ -25,10 +23,11 @@ class DownloadController extends Controller
 		);
     }
 	/**
-     * @Route("/download/{version}")
+     * @Route("/download/{version}", name="download_version")
 	 */
 	public function download($version)
 	{
+		$this->downloader()->download($version);
 		$stat = $this->downloader()->status()['code'];
 		
 		return $this->render(
@@ -54,9 +53,9 @@ class DownloadController extends Controller
 	private function css_status_codes()
 	{
 		return array(
-			DownloadController::VOID => 'alert-warning',
-			DownloadController::SUCCESS => 'alert-success',
-			DownloadController::ERROR => 'alert-danger'
+			DefaultController::VOID => 'alert-warning',
+			DefaultController::SUCCESS => 'alert-success',
+			DefaultController::ERROR => 'alert-danger'
 		);
 	}
 }

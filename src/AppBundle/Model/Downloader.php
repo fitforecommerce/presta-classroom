@@ -3,6 +3,7 @@ namespace AppBundle\Model;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use AppBundle\Controller\DefaultController;
 
 class Downloader {
 
@@ -33,11 +34,11 @@ class Downloader {
 			);
 		} catch (Exception $e) {
 			error_log('error when downloading');
-			$this->set_msg($this->lang->line('downloader_error') . $version. $e);
-			$this->set_status(Install::ERROR);
+			$this->set_msg("<p>Error downloading $version got exception:  <code>$e</code></p>");
+			$this->set_status(DefaultController::ERROR);
 		}
-		$this->set_msg($this->lang->line('downloader_success'));
-		$this->set_status(Install::SUCCESS);
+		$this->set_msg("Successfully downloaded $version");
+		$this->set_status(DefaultController::SUCCESS);
 		return true;
 	}
 	public function available_versions()
@@ -77,7 +78,7 @@ class Downloader {
 			return true;
 		} catch (Exception $e) {
 			error_log("ERROR when creating download dir in Installer_model:\n" . $e);
-			$this->set_msg($this->lang->line('downloader_error_create_dir' . "\n" . $e));
+			$this->set_msg("<p>Could not create dir in " . $this->download_target_dir() . " got error <code>$e</code>");
 			$this->set_status(Install::ERROR);
 			return false;
 		}
@@ -85,7 +86,7 @@ class Downloader {
 	private function assert_download_dir_writable()
 	{
 		if(!is_writable($this->download_target_dir())) {
-			$this->set_msg($this->lang->line('downloader_error_writable_dir'));
+			$this->set_msg("<p>Dir " . $this->download_target_dir() . " is not writable, got error <code>$e</code>");
 			$this->set_status(Install::ERROR);
 			return false;
 		}
@@ -93,7 +94,7 @@ class Downloader {
 	}
 	private function download_target_dir()
 	{
-		$path  = realpath(dirname(__FILE__)."/../../../web");
+		$path  = realpath(dirname(__FILE__)."/../../../web/bundles");
 		$path .= "/presta_versions_download";
 		return $path;
 	}

@@ -8,7 +8,15 @@
 		{% for value in versions %}
 			<li class="list-group-item">
 				{{ value }}
-				<a href="/download/{{ value  }}"><span class="fa-download"></span>Download</a>
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<a href="{{ path('download_version', {'version': value}) }}">
+							<i class="fa fa-download"></i>
+						</a>
+						&nbsp;
+						<a href="{{ path('download_version', {'version': value}) }}">
+						Download
+						</a>
+					</button>
 			</li>
 		{% endfor %}
 	</ul>
