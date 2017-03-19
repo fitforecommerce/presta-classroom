@@ -3,11 +3,8 @@
 {% block title %}Download{% endblock %}
 
 {% block body %}
-	<h1>Download</h1>
-	<ul class="list-group">
-		{% for value in versions %}
-			<li class="list-group-item">
-				{{ value }}
-			</li>
-		{% endfor %}
+	<h1>Downloading {{ version }}</h1>
+
+	<div class="alert {{ status_cssclass }}" role="alert">{{ status_message }}</div>
+
 {% endblock %}

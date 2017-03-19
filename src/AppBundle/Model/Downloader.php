@@ -11,7 +11,10 @@ class Downloader {
 	# config_item($key)
 	public function __construct()
 	{
-		$this->status = [];
+		$this->status = array(
+			'msg' => 'Nothing done yet',
+			'code' => 0
+		);
 		$this->fs = new Filesystem();
 	}
 	public function download($version=NULL)
