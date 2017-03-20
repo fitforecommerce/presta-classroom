@@ -20,6 +20,7 @@ class Downloader {
 	}
 	public function download($version=NULL)
 	{
+		$available_versions = $this->available_versions();
 		if(!$version) $version = $this->current_version_str();
 
 		# make sure the downloads dir exists
@@ -30,7 +31,7 @@ class Downloader {
 		try {
 			file_put_contents(
 				$this->download_target_file($version), 
-				fopen($this->current_version_url(), 'r')
+				fopen($available_versions[$version]['url'], 'r')
 			);
 		} catch (Exception $e) {
 			error_log('error when downloading');
@@ -43,7 +44,7 @@ class Downloader {
 	}
 	public function available_versions()
 	{
-		return array_keys($this->download_urls());
+		return VersionDownload::available_versions();
 	}
 	public function status()
 	{
@@ -70,6 +71,11 @@ class Downloader {
 		$d->close();
 		return $arDir;
 	}
+	public function is_downloaded($version)
+	{
+		if(file_exists($this->download_target_file($version))) return true;
+		return false;
+	}
 	private function assert_download_dir()
 	{
 		if(file_exists($this->download_target_dir())) return true;
@@ -94,7 +100,7 @@ class Downloader {
 	}
 	private function download_target_dir()
 	{
-		$path  = realpath(dirname(__FILE__)."/../../../web/bundles");
+		$path  = realpath(__DIR__."/../../../web/bundles");
 		$path .= "/presta_versions_download";
 		return $path;
 	}
@@ -102,22 +108,14 @@ class Downloader {
 	{
 		return $this->download_target_dir() . "/$version_str.zip";
 	}
-	private function download_urls()
-	{
-		return array(
-			'1.7.0.3' => 'https://download.prestashop.com/download/releases/prestashop_1.7.0.3.zip',
-			'1.7.0.4' => 'http://localhost:8888/presta-depot/1.7.0.3.zip'
-			# add later versions here
-		);
-	}
 	private function current_version_url()
 	{
-		$urls = $this->download_urls();
-		return end($urls);
+		$urls = $this->available_versions();
+		return end($urls)['url'];
 	}
 	private function current_version_str()
 	{
-		$v = $this->available_versions();
+		$v = array_keys($this->available_versions());
 		return end($v);
 	}
 }
