@@ -1,6 +1,5 @@
 --- 
 1.7.0.3:
-  # url: "https://download.prestashop.com/download/releases/prestashop_1.7.0.3.zip"
   url: "http://localhost:8888/presta-depot/1.7.0.3.zip"
   version: 1.7.0.3
 1.7.0.4:
