@@ -100,6 +100,7 @@ class Downloader {
 	}
 	private function download_target_dir()
 	{
+		error_log('Downloader::download_target_dir use config values');
 		$path  = realpath(__DIR__."/../../../web/bundles");
 		$path .= "/presta_versions_download";
 		return $path;
