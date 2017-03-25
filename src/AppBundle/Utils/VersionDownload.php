@@ -7,7 +7,7 @@ class VersionDownload {
 
 	public static function available_versions()
 	{
-		$fp = realpath(__DIR__.'/../../../app/config/prestashop_versions.yml');
+		$fp = realpath(__DIR__.'/../../../app/config/prestashop_versions_dev.yml');
 		$l = Yaml::parse(file_get_contents($fp));
 		return $l;
 	}
