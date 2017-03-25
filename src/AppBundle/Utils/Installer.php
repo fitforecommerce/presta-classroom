@@ -1,6 +1,7 @@
 <?php
+namespace AppBundle\Installer
 
-class Installer_model extends CI_Model {
+class Installer {
 
 	private $status;
 

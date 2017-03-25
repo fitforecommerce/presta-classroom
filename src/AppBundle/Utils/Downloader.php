@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Model;
+namespace AppBundle\Utils;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;

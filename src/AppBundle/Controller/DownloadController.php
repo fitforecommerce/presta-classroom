@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use AppBundle\Model\Downloader;
+use AppBundle\Utils\Downloader;
 
 class DownloadController extends Controller
 {
