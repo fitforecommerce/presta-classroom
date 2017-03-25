@@ -19,7 +19,7 @@ class InstallerController extends Controller
 		# $fv = $f->buildView();
         return $this->render(
 			'install/configure.html.twig', 
-			array('form' => $f)
+			array('form' => $f->createView())
 		);
     }
 }
