@@ -4,9 +4,6 @@
 
 {% block body %}
 	<h1>Dashboard</h1>
-	<h2>Downloaded versions</h2>
-	<ul>
-		{% for value in downloaded_versions %}
-			<li>{{ value }}</li>
-		{% endfor %}
+    <h2>Available versions</h2>
+        {% include 'download/available_versions_list.html.twig' %}
 {% endblock %}
