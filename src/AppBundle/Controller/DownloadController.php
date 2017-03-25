@@ -4,19 +4,16 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use AppBundle\Utils\Downloader;
 
 class DownloadController extends Controller
 {
-
-	private $downloader;
 
     /**
 	 * @Route("/download")
      */
     public function showAvailableDownloads()
     {
-        $dv = $this->downloader()->available_versions();
+        $dv = $this->get('app.downloader')->available_versions();
         return $this->render(
 			'download/available_versions.html.twig', 
 			array('versions' => $dv)
@@ -27,25 +24,19 @@ class DownloadController extends Controller
 	 */
 	public function download($version)
 	{
-		$this->downloader()->download($version);
-		$stat = $this->downloader()->status()['code'];
+		$this->get('app.downloader')->download($version);
+		$stat = $this->get('app.downloader')->status()['code'];
 		
 		return $this->render(
 			'download/download.html.twig',
 			array(
 				'status_code' => $stat,
 				'status_cssclass' => $this->css_class_for_code($stat),
-				'status_message' => $this->downloader()->status()['msg'],
+				'status_message' => $this->get('app.downloader')->status()['msg'],
 				'version' => $version,
-				'versions' => $this->downloader()->available_versions()
+				'versions' => $this->get('app.downloader')->available_versions()
 			)
 		);
-	}
-	private function downloader()
-	{
-		if(isset($this->downloader)) return $this->downloader;
-		$this->downloader = new Downloader();
-		return $this->downloader;
 	}
 	private function css_class_for_code($stat)
 	{
