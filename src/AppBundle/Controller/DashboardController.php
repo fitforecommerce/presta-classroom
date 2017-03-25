@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $dv = $this->downloader()->available_versions();
         return $this->render(
 			'dashboard/index.html.twig', 
-			array('downloaded_versions' => $dv)
+			array('versions' => $dv)
 		);
     }
 	private function downloader()
