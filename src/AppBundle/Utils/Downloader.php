@@ -4,6 +4,7 @@ namespace AppBundle\Utils;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use AppBundle\Controller\DefaultController;
+use AppBundle\Entity\VersionDownload;
 
 class Downloader {
 
