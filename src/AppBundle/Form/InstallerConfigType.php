@@ -9,17 +9,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType; 
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-class PostType extends AbstractType {
+class InstallerConfigType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$builder ->add('title')
-			->add('summary', TextareaType::class)
-			->add('content', TextareaType::class)
-			->add('authorEmail', EmailType::class)
-			->add('publishedAt', DateTimeType::class); 
+		$builder ->add('server_path', TextareaType::class); 
 	}
 	public function configureOptions(OptionsResolver $resolver) {
-		$resolver->setDefaults(array( 'data_class' => Post::class,
-	)); 
+		# $resolver->setDefaults(array( 'data_class' => Post::class,)); 
 	}
 }	
 ?>
