@@ -7,7 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    app.presta_versions_download_dir: "%kernel.root_dir%/web/bundles/presta_versions_download"
+    app.presta_versions_download_dir: "%kernel.root_dir%/../web/bundles/presta_versions_download"
 
 framework:
     #esi:             ~
