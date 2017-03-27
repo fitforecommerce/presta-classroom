@@ -5,14 +5,18 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use AppBundle\Controller\DefaultController;
 use AppBundle\Entity\VersionDownload;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class Downloader {
 
 	private $status;
 
 	# config_item($key)
-	public function __construct()
+	public function __construct($ntarget)
 	{
+		$this->target_path = $ntarget;
 		$this->status = array(
 			'msg' => 'Nothing done yet',
 			'code' => 0
@@ -101,10 +105,7 @@ class Downloader {
 	}
 	private function download_target_dir()
 	{
-		error_log('Downloader::download_target_dir use config values');
-		$path  = realpath(__DIR__."/../../../web/bundles");
-		$path .= "/presta_versions_download";
-		return $path;
+		return $this->target_path;
 	}
 	private function download_target_file($version_str)
 	{
