@@ -34,8 +34,13 @@ class InstallerController extends Controller
      */
 	public function execute(Request $request)
 	{
-        return $this->render(
-			'install/execute.html.twig'
+		$installer = $this->get('app.installer');
+		$installer->set_config($request);
+		$installer->run();
+
+		return $this->render(
+			'install/execute.html.twig',
+			array('status' => $installer->status())
 		);
 	}
 }
