@@ -1,7 +1,5 @@
 {% extends 'download/available_versions.html.twig' %}
 
 {% block status %}
-	<div class="alert {{ status_cssclass }}" role="alert">{{ status_message }}</div>
-
-
+	{% include 'status.html.twig' %}
 {% endblock %}
