@@ -1,28 +1,31 @@
 <?php
-namespace AppBundle\Installer
+namespace AppBundle\Utils;
+
+use AppBundle\Controller\DefaultController;
 
 class Installer {
 
 	private $status;
+	private $config;
 
 	public function __construct()
 	{
-		// Call the CI_Model constructor
-		parent::__construct();
-		$this->lang->load('ui', 'english');
-		$this->load->helper('url');
-
-		$this->set_msg($this->lang->line('installer_void'));
-		$this->set_status(Install::VOID);
-		error_log('Installer_model hühü');
+		$this->status = [];
+		$this->set_msg('nothing done');
+		$this->set_status(DefaultController::VOID);
 	}
-	public function download()
+	public function run()
 	{
-		$this->downloader->download();
-		$this->set_status($this->downloader->status());
+		$this->set_msg(print_r($this->config(), true));
+		return $this->msg();
 	}
-	public function deploy_prestashop_installer()
+	public function config()
 	{
+		return $this->config;
+	}
+	public function set_config($conf)
+	{
+		$this->config = $conf;
 	}
 	public function status()
 	{
@@ -30,51 +33,15 @@ class Installer {
 	}
 	public function set_status($ns)
 	{
-		$this->status['steps'] = $this->steps();
 		$this->status['code'] = $ns;
+	}
+	public function msg()
+	{
+		return $this->status['msg'];
 	}
 	public function set_msg($ns)
 	{
 		$this->status['msg'] = $ns;
-	}
-	private function base_url()
-	{
-		return base_url('index.php/install/');
-	}
-	private function steps()
-	{
-		return array(
-			'download' 	=> $this->download_step(),
-			'setup' 	=> $this->setup_step(),
-			'install' 	=> $this->install_step()
-		);
-	}
-	private function download_step()
-	{
-		$addstr = "<ul>";
-		$dv = $this->downloader->downloaded_versions();
-		foreach ($dv as $v) {
-			$addstr .= "<li>$v</li>";
-		}
-		$addstr .= "</ul>";
-		return array(
-			'description' => 'Download the prestashop installer '.$addstr,
-			'url' => $this->base_url() . 'download'
-		);
-	}
-	private function setup_step()
-	{
-		return array(
-			'description' => 'Configure your setup',
-			'url' => $this->base_url() . 'setup'
-		);
-	}
-	private function install_step()
-	{
-		return array(
-			'description' => 'Run the Prestahop installation process',
-			'url' => $this->base_url() . 'install_ps'
-		);
 	}
 }
 ?>
