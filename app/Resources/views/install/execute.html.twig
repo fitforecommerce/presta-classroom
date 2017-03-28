@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Download{% endblock %}
+{% block title %}Execute Install{% endblock %}
 
 {% block body %}
 
 	<h1>Execute Install</h1>
 
-	{% block status %}{% endblock %}
+	{% block status %}
+		{% include 'status.html.twig' %}
+	{% endblock %}
 
 {% endblock %}
