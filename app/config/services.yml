@@ -10,3 +10,5 @@ services:
     app.downloader:
         class: AppBundle\Utils\Downloader
         arguments: ['%app.presta_versions_download_dir%']
+    app.installer:
+        class: AppBundle\Utils\Installer
