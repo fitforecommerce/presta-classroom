@@ -30,24 +30,10 @@ class DownloadController extends Controller
 		return $this->render(
 			'download/download.html.twig',
 			array(
-				'status_code' => $stat,
-				'status_cssclass' => $this->css_class_for_code($stat),
-				'status_message' => $this->get('app.downloader')->status()['msg'],
+				'status' => $stat,
 				'version' => $version,
 				'versions' => $this->get('app.downloader')->available_versions()
 			)
-		);
-	}
-	private function css_class_for_code($stat)
-	{
-		return $this->css_status_codes()[$stat];
-	}
-	private function css_status_codes()
-	{
-		return array(
-			DefaultController::VOID => 'alert-warning',
-			DefaultController::SUCCESS => 'alert-success',
-			DefaultController::ERROR => 'alert-danger'
 		);
 	}
 }

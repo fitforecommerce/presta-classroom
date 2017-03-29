@@ -11,16 +11,12 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class Downloader {
 
-	private $status;
+	use AppBundle\Traits\StatusTrait;
 
 	# config_item($key)
 	public function __construct($ntarget)
 	{
 		$this->target_path = $ntarget;
-		$this->status = array(
-			'msg' => 'Nothing done yet',
-			'code' => 0
-		);
 		$this->fs = new Filesystem();
 	}
 	public function download($version=NULL)
@@ -41,27 +37,15 @@ class Downloader {
 		} catch (Exception $e) {
 			error_log('error when downloading');
 			$this->set_msg("<p>Error downloading $version got exception:  <code>$e</code></p>");
-			$this->set_status(DefaultController::ERROR);
+			$this->set_status_code(DefaultController::ERROR);
 		}
-		$this->set_msg("Successfully downloaded $version");
-		$this->set_status(DefaultController::SUCCESS);
+		$this->set_status_message("Successfully downloaded $version");
+		$this->set_status_code(DefaultController::SUCCESS);
 		return true;
 	}
 	public function available_versions()
 	{
 		return VersionDownload::available_versions();
-	}
-	public function status()
-	{
-		return $this->status;
-	}
-	public function set_status($ns)
-	{
-		$this->status['code'] = $ns;
-	}
-	public function set_msg($ns)
-	{
-		$this->status['msg'] = $ns;
 	}
 	public function downloaded_versions()
 	{
@@ -90,7 +74,7 @@ class Downloader {
 		} catch (Exception $e) {
 			error_log("ERROR when creating download dir in Installer_model:\n" . $e);
 			$this->set_msg("<p>Could not create dir in " . $this->download_target_dir() . " got error <code>$e</code>");
-			$this->set_status(Install::ERROR);
+			$this->set_status_code(Install::ERROR);
 			return false;
 		}
 	}
@@ -98,7 +82,7 @@ class Downloader {
 	{
 		if(!is_writable($this->download_target_dir())) {
 			$this->set_msg("<p>Dir " . $this->download_target_dir() . " is not writable, got error <code>$e</code>");
-			$this->set_status(Install::ERROR);
+			$this->set_status_code(Install::ERROR);
 			return false;
 		}
 		return true;
