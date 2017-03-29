@@ -2,22 +2,29 @@
 namespace AppBundle\Utils;
 
 use AppBundle\Controller\DefaultController;
+use AppBundle\Traits\StatusTrait;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Installer {
 
-	private $status;
+	use StatusTrait;
+
 	private $config;
 
 	public function __construct()
 	{
-		$this->status = [];
-		$this->set_msg('nothing done');
-		$this->set_status(DefaultController::VOID);
 	}
 	public function run()
 	{
-		$this->set_msg(print_r($this->config(), true));
-		return $this->msg();
+		$this->append_status_message('<code>'.print_r($this->config(), true).'</code>');
+		try {
+			$this->copy_files();
+		} catch (Exception $e) {
+			return $this->status();
+		}
+		$this->set_status_code(DefaultController::SUCCESS);
+		$this->append_status_message("<br>Successfully installed the shops.");
+		return $this->status();
 	}
 	public function config()
 	{
@@ -27,21 +34,22 @@ class Installer {
 	{
 		$this->config = $conf;
 	}
-	public function status()
+	private function copy_files()
 	{
-		return $this->status;
+		$target_dir = realpath($this->config()['server_path']);
+		echo "<p>target dir: $target_dir";
+		if(!$this->assert_target_dir($target_dir)) throw new Exception("Unable to create target dir $target_dir", 1);
+		;
 	}
-	public function set_status($ns)
+	private function assert_target_dir($td)
 	{
-		$this->status['code'] = $ns;
-	}
-	public function msg()
-	{
-		return $this->status['msg'];
-	}
-	public function set_msg($ns)
-	{
-		$this->status['msg'] = $ns;
+		if(file_exists($td)) return true;
+		if(!@mkdir($td)) {
+			$error = error_get_last();
+			$this->set_status_code(DefaultController::ERROR);
+			$this->append_status_message("Could not create target dir '$td' <br>".$error['message']);
+			return false;
+		}
 	}
 }
 ?>

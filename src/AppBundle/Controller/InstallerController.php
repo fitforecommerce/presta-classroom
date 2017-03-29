@@ -35,7 +35,7 @@ class InstallerController extends Controller
 	public function execute(Request $request)
 	{
 		$installer = $this->get('app.installer');
-		$installer->set_config($request);
+		$installer->set_config($request->get('installer_config'));
 		$installer->run();
 
 		return $this->render(
