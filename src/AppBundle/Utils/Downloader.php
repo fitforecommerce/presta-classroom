@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
+use \ZipArchive;
+
 class Downloader {
 
 	use \AppBundle\Traits\StatusTrait;
@@ -39,6 +41,7 @@ class Downloader {
 			$this->set_msg("<p>Error downloading $version got exception:  <code>$e</code></p>");
 			$this->set_status_code(DefaultController::ERROR);
 		}
+		$this->unzip_download($this->download_target_file($version));
 		$this->set_status_message("Successfully downloaded $version");
 		$this->set_status_code(DefaultController::SUCCESS);
 		return true;
@@ -64,6 +67,19 @@ class Downloader {
 	{
 		if(file_exists($this->download_target_file($version))) return true;
 		return false;
+	}
+	private function unzip_download($target_file)
+	{
+		$target_path = $target_file.'.unzipped';
+		$this->fs->mkdir($target_path);
+		$zip = new ZipArchive;
+		if ($zip->open($target_file) === TRUE) {
+		    $zip->extractTo($target_path.'/');
+		    $zip->close();
+		    echo 'ok';
+		} else {
+		    echo 'failed';
+		}
 	}
 	private function assert_download_dir()
 	{
