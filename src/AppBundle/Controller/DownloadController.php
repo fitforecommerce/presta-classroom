@@ -30,7 +30,7 @@ class DownloadController extends Controller
 		return $this->render(
 			'download/download.html.twig',
 			array(
-				'status' => $stat,
+				'status' => $this->get('app.downloader')->status(),
 				'version' => $version,
 				'versions' => $this->get('app.downloader')->available_versions()
 			)
