@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class Downloader {
 
-	use AppBundle\Traits\StatusTrait;
+	use \AppBundle\Traits\StatusTrait;
 
 	# config_item($key)
 	public function __construct($ntarget)
