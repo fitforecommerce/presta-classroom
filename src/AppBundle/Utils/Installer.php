@@ -20,10 +20,12 @@ class Installer {
 		try {
 			$this->copy_files();
 		} catch (Exception $e) {
-			return $this->status();
+			$this->set_status_code(DefaultController::ERROR);
+			$this->append_status_message($e->__toString());
+			return false;
 		}
-		$this->set_status_code(DefaultController::SUCCESS);
-		$this->append_status_message("<br>Successfully installed the shops.");
+		# $this->set_status_code(DefaultController::SUCCESS);
+		# $this->append_status_message("Successfully installed the shops.");
 		return $this->status();
 	}
 	public function config()
@@ -36,30 +38,31 @@ class Installer {
 	}
 	private function copy_files()
 	{
-		echo "<p>".$this->config()['server_path']."</p>";
-		$target_dir = $this->config()['server_path'];
-		echo "<p>realpath $target_dir</p>";
-		if(!$this->assert_target_dir($target_dir)) {
+		$this->append_status_message("Install to ".$this->config()['server_path']);
+		$this->check_target_dir();
+		$this->create_dirs($this->config()['server_path']);
+	}
+	private function check_target_dir()
+	{
+		if(!$this->assert_target_dir($this->config()['server_path'])) {
 			throw new Exception("Unable to create target dir $target_dir", 1);
 		}
-		$this->create_dirs($target_dir);
 	}
 	private function create_dirs($target_dir)
 	{
 		for ($i=0; $i < $this->config()['number_of_installations']; $i++) { 
 			$this->assert_target_dir($target_dir.'/shop'.($i + 1));
 		};
-		$this->append_status_message("<br>Successfully created the directories.");
+		$this->append_status_message("Successfully created the directories.");
 		$this->set_status_code(DefaultController::SUCCESS);
 	}
 	private function assert_target_dir($td)
 	{
-		echo "<p>assert_target_dir $td</p>";
 		if(file_exists($td)) return true;
 		if(!@mkdir($td)) {
 			$error = error_get_last();
 			$this->set_status_code(DefaultController::ERROR);
-			$this->append_status_message("Could not create dir '$td' <br>".$error['message']);
+			$this->append_status_message("Could not create dir '$td' ".$error['message']);
 			return false;
 		}
 		return true;
