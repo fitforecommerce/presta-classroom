@@ -1,3 +1,5 @@
 <div class="alert {{ status.cssclass }}" role="alert">
-	{{ status.message }}
+	{% for s in status.message %}
+		<p>{{ s|raw }}</p>
+	{% endfor %}
 </div>

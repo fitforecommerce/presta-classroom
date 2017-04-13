@@ -8,8 +8,9 @@ trait StatusTrait
 {
 	private $status = array(
 		'code' 		=> DefaultController::VOID,
-		'message' 	=> "Nothing done.",
-		'cssclass' 	=> 'alert-warning'
+		'message' 	=> [],
+		'cssclass' 	=> 'alert-warning',
+		'debug'		=> []
 	);
 	public function status()
 	{
@@ -22,11 +23,11 @@ trait StatusTrait
 	}
 	public function set_status_message($nstr)
 	{
-		$this->status['message'] = $nstr;
+		$this->status['message'] = [$nstr];
 	}
 	public function append_status_message($nstr)
 	{
-		$this->status['message'] .= $nstr;
+		array_push($this->status['message'], $nstr);
 	}
 	private function css_class_for_code($stat)
 	{
