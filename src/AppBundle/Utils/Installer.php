@@ -36,7 +36,8 @@ class Installer {
 	}
 	private function copy_files()
 	{
-		$target_dir = realpath($this->config()['server_path']);
+		echo "<p>".$this->config()['server_path']."</p>";
+		$target_dir = $this->config()['server_path'];
 		echo "<p>realpath $target_dir</p>";
 		if(!$this->assert_target_dir($target_dir)) {
 			throw new Exception("Unable to create target dir $target_dir", 1);
@@ -48,6 +49,8 @@ class Installer {
 		for ($i=0; $i < $this->config()['number_of_installations']; $i++) { 
 			$this->assert_target_dir($target_dir.'/shop'.($i + 1));
 		};
+		$this->append_status_message("<br>Successfully created the directories.");
+		$this->set_status_code(DefaultController::SUCCESS);
 	}
 	private function assert_target_dir($td)
 	{
@@ -59,6 +62,7 @@ class Installer {
 			$this->append_status_message("Could not create dir '$td' <br>".$error['message']);
 			return false;
 		}
+		return true;
 	}
 }
 ?>
