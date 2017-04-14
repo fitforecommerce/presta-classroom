@@ -16,8 +16,10 @@ class InstallerController extends Controller
     public function configure(Request $request)
     {
         $f = $this->createForm(InstallerConfigType::class);
+		$f->get('server_path')->setData($this->default_server_path());
+
 	    $f->handleRequest($request);
-		
+
 		if ($f->isSubmitted() && $f->isValid()) {
 			$task = $f->getData();
 			return $this->execute($request);
@@ -42,6 +44,10 @@ class InstallerController extends Controller
 			'install/execute.html.twig',
 			array('status' => $installer->status())
 		);
+	}
+	private function default_server_path()
+	{
+		return realpath($this->get('kernel')->getRootDir().'/../web/shops');
 	}
 }
 ?>
