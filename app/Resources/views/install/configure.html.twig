@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% form_theme form 'form/fields.html.twig' %}
 
 {% block title %}Download{% endblock %}
 
@@ -9,7 +10,8 @@
 	{% block status %}{% endblock %}
 
 	{{ form_start(form) }}
-	{{ form_widget(form) }}
+		{{ form_widget(form, {'attr': {'class': 'installer_config'}}) }}
+		
 	{{ form_end(form) }}
 
 {% endblock %}
