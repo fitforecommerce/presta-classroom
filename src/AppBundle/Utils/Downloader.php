@@ -20,7 +20,7 @@ class Downloader {
 	public function __construct($ntarget)
 	{
 		$this->target_path = $ntarget;
-		$this->fs = new FileHelper($ntarget);
+		$this->fs = new FileHelper();
 	}
 	public function download($version=NULL)
 	{
@@ -53,7 +53,7 @@ class Downloader {
 	}
 	private function unzip_download($target_file)
 	{
-		$unzipped_target_path = $target_file.'.unzipped';
+		$unzipped_target_path = preg_replace('/\.zip/', '', $target_file).'.unzipped';
 		$this->fs->mkdir($unzipped_target_path);
 		$zip = new ZipArchive;
 		if ($zip->open($target_file) === TRUE) {
