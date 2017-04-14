@@ -5,6 +5,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use AppBundle\Controller\DefaultController;
 use AppBundle\Entity\VersionDownload;
+use AppBundle\Utils\FileHelper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -19,7 +20,7 @@ class Downloader {
 	public function __construct($ntarget)
 	{
 		$this->target_path = $ntarget;
-		$this->fs = new Filesystem();
+		$this->fs = new FileHelper($ntarget);
 	}
 	public function download($version=NULL)
 	{
@@ -38,7 +39,7 @@ class Downloader {
 			);
 		} catch (Exception $e) {
 			error_log('error when downloading');
-			$this->set_msg("<p>Error downloading $version got exception:  <code>$e</code></p>");
+			$this->set_status_message("<p>Error downloading $version got exception:  <code>$e</code></p>");
 			$this->set_status_code(DefaultController::ERROR);
 		}
 		$this->unzip_download($this->download_target_file($version));
@@ -63,11 +64,6 @@ class Downloader {
 		$d->close();
 		return $arDir;
 	}
-	public function is_downloaded($version)
-	{
-		if(file_exists($this->download_target_file($version))) return true;
-		return false;
-	}
 	private function unzip_download($target_file)
 	{
 		$target_path = $target_file.'.unzipped';
@@ -83,22 +79,17 @@ class Downloader {
 	}
 	private function assert_download_dir()
 	{
-		if(file_exists($this->download_target_dir())) return true;
 		try {
-			$this->fs->mkdir($this->download_target_dir());
-			return true;
+			return $this->fs->assert_dir_exists($this->download_target_dir());
 		} catch (Exception $e) {
-			error_log("ERROR when creating download dir in Installer_model:\n" . $e);
-			$this->set_msg("<p>Could not create dir in " . $this->download_target_dir() . " got error <code>$e</code>");
-			$this->set_status_code(Install::ERROR);
+			$this->set_status($this->fs->status());
 			return false;
 		}
 	}
 	private function assert_download_dir_writable()
 	{
-		if(!is_writable($this->download_target_dir())) {
-			$this->set_msg("<p>Dir " . $this->download_target_dir() . " is not writable, got error <code>$e</code>");
-			$this->set_status_code(Install::ERROR);
+		if(!$this->fs->assert_dir_writable($this->download_target_dir())) {
+			$this->set_status($this->fs->status());
 			return false;
 		}
 		return true;

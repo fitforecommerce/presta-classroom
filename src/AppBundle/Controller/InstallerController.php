@@ -47,7 +47,10 @@ class InstallerController extends Controller
 	}
 	private function default_server_path()
 	{
-		return realpath($this->get('kernel')->getRootDir().'/../web/shops');
+		$path = $this->get('kernel')->getRootDir().'/../web/shops';
+		$fh = $this->get('app.filehelper');
+		$fh->assert_dir_exists($path);
+		return realpath($path);
 	}
 }
 ?>
