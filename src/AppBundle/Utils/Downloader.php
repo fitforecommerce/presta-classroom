@@ -24,25 +24,12 @@ class Downloader {
 	}
 	public function download($version=NULL)
 	{
-		$available_versions = $this->available_versions();
 		if(!$version) $version = $this->current_version_str();
-
 		# make sure the downloads dir exists
 		if(!$this->assert_download_dir()) return false;
 		if(!$this->assert_download_dir_writable()) return false;
-
-		# try to download the current version
-		try {
-			file_put_contents(
-				$this->download_target_file($version), 
-				fopen($available_versions[$version]['url'], 'r')
-			);
-		} catch (Exception $e) {
-			error_log('error when downloading');
-			$this->set_status_message("<p>Error downloading $version got exception:  <code>$e</code></p>");
-			$this->set_status_code(DefaultController::ERROR);
-		}
-		$this->unzip_download($this->download_target_file($version));
+		if(!$this->download_version($version)) return false;
+		if(!$this->unzip_download($this->download_target_file($version))) return false;
 		$this->set_status_message("Successfully downloaded $version");
 		$this->set_status_code(DefaultController::SUCCESS);
 		return true;
@@ -66,15 +53,17 @@ class Downloader {
 	}
 	private function unzip_download($target_file)
 	{
-		$target_path = $target_file.'.unzipped';
-		$this->fs->mkdir($target_path);
+		$unzipped_target_path = $target_file.'.unzipped';
+		$this->fs->mkdir($unzipped_target_path);
 		$zip = new ZipArchive;
 		if ($zip->open($target_file) === TRUE) {
-		    $zip->extractTo($target_path.'/');
+		    $zip->extractTo($unzipped_target_path.'/');
 		    $zip->close();
-		    echo 'ok';
+		    return true;
 		} else {
-		    echo 'failed';
+			$this->set_status_message("<p>Error unzipping $target_file</p>");
+			$this->set_status_code(DefaultController::ERROR);
+		    return false;
 		}
 	}
 	private function assert_download_dir()
@@ -111,5 +100,21 @@ class Downloader {
 	{
 		$v = array_keys($this->available_versions());
 		return end($v);
+	}
+	private function download_version($version)
+	{
+		$available_versions = $this->available_versions();
+		# try to download the current version
+		try {
+			file_put_contents(
+				$this->download_target_file($version), 
+				fopen($available_versions[$version]['url'], 'r')
+			);
+			return true;
+		} catch (Exception $e) {
+			$this->set_status_message("<p>Error downloading $version got exception:  <code>$e</code></p>");
+			$this->set_status_code(DefaultController::ERROR);
+			return false;
+		}
 	}
 }
