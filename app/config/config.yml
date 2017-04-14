@@ -8,6 +8,7 @@ imports:
 parameters:
     locale: en
     app.presta_versions_download_dir: "%kernel.root_dir%/../web/bundles/presta_versions_download"
+    app.default_shops_dir: "%kernel.root_dir%/../web/shops"
 
 framework:
     #esi:             ~
