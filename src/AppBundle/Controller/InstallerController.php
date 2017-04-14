@@ -47,7 +47,7 @@ class InstallerController extends Controller
 	}
 	private function default_server_path()
 	{
-		$path = $this->getContainer()->getParameter('app.default_shops_dir');
+		$path = $this->getParameter('app.default_shops_dir');
 		$fh = $this->get('app.filehelper');
 		$fh->assert_dir_exists($path);
 		return realpath($path);
