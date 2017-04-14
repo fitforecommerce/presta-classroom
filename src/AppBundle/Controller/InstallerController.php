@@ -36,8 +36,11 @@ class InstallerController extends Controller
      */
 	public function execute(Request $request)
 	{
+		$config = $request->get('installer_config');
+		$config['presta_source_dir'] = $this->getParameter('app.presta_versions_download_dir');
+
 		$installer = $this->get('app.installer');
-		$installer->set_config($request->get('installer_config'));
+		$installer->set_config($config);
 		$installer->run();
 
 		return $this->render(

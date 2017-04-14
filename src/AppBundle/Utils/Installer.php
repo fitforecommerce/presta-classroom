@@ -5,6 +5,8 @@ use AppBundle\Controller\DefaultController;
 use AppBundle\Traits\StatusTrait;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
+use \ZipArchive;
+
 class Installer {
 
 	use StatusTrait;
@@ -41,6 +43,7 @@ class Installer {
 		$this->append_status_message("Install to ".$this->config()['server_path']);
 		$this->check_target_dir();
 		$this->create_dirs($this->config()['server_path']);
+		$this->extract_installers();
 	}
 	private function check_target_dir()
 	{
@@ -48,13 +51,31 @@ class Installer {
 			throw new Exception("Unable to create target dir $target_dir", 1);
 		}
 	}
-	private function create_dirs($target_dir)
+	private function create_dirs()
 	{
 		for ($i=0; $i < $this->config()['number_of_installations']; $i++) { 
-			$this->assert_target_dir($target_dir.'/shop'.($i + 1));
+			$this->assert_target_dir($this->config()['server_path'].'/shop'.($i + 1));
 		};
 		$this->append_status_message("Successfully created the directories.");
 		$this->set_status_code(DefaultController::SUCCESS);
+	}
+	private function extract_installers()
+	{
+		for ($i=0; $i < $this->config()['number_of_installations']; $i++) { 
+			$zip = new ZipArchive;
+			$tmp_target = $this->config()['server_path'].'/shop'.($i + 1);
+			if ($zip->open($this->src_zip_file()) === TRUE) {
+			    $zip->extractTo($tmp_target);
+			    $zip->close();
+			} else {
+				$this->set_status_message("<p>Error unzipping $tmp_target</p>");
+				$this->set_status_code(DefaultController::ERROR);
+			    return false;
+			}
+		};
+		$this->append_status_message("Successfully unzipped the installers.");
+		$this->set_status_code(DefaultController::SUCCESS);
+		return true;
 	}
 	private function assert_target_dir($td)
 	{
@@ -66,6 +87,13 @@ class Installer {
 			return false;
 		}
 		return true;
+	}
+	private function src_zip_file()
+	{
+		$rv  = $this->config()['presta_source_dir'];
+		$rv .= '/'.$this->config()['presta_version'].'.unzipped';
+		$rv .= '/prestashop.zip';
+		return $rv;
 	}
 }
 ?>

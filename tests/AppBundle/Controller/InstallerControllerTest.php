@@ -33,10 +33,16 @@ class InstallerControllerTest extends WebTestCase
 		$this->assertDirectoryNotExists($dp.'/shop1');
 
         $crawler = $client->request('GET', '/install');
-		$form = $crawler->selectButton('Submit')->form();
 
+		$form = $crawler->selectButton('Submit')->form();
+		$form['installer_config[number_of_installations]'] = 4;
+		$form['installer_config[server_path]'] = $client->getContainer()->getParameter('app.default_shops_dir');
 		$client->submit($form);
-		$this->assertDirectoryExists($dp.'/shop1');
+
+		for ($i=1; $i < 5; $i++) { 
+			$this->assertDirectoryExists($dp.'/shop'.$i);
+			$this->assertFileExists($dp.'/shop'.$i.'/index.php');
+		}
 	}
 
 
