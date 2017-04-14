@@ -19,12 +19,10 @@ class InstallerConfigType extends AbstractType {
 			'presta_version', 
 			ChoiceType::class, 
 			array('choices'  => $this->versions_choice())
-		);
-
-		$builder->add('number_of_installations', IntegerType::class);
-
-		$builder->add('server_path', TextType::class);
-		$builder->add('submit', SubmitType::class);
+		)
+			->add('number_of_installations', IntegerType::class, array('data' => 1))
+			->add('server_path', TextType::class)
+			->add('submit', SubmitType::class);
 	}
 	public function configureOptions(OptionsResolver $resolver) {
 		# $resolver->setDefaults(array( 'data_class' => Post::class,)); 
