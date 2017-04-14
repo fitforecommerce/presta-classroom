@@ -24,7 +24,8 @@ class DownloadControllerTest extends WebTestCase
 		$dp = $client->getContainer()->getParameter('app.presta_versions_download_dir');
 		$td = $this->target_download($dp);
 
-		$this->file_helper()->remove(realpath($dp));
+		$this->file_helper()->remove($dp);
+		$this->assertDirectoryNotExists($dp);
 
         $crawler = $client->request('GET', '/download/1.7.0.4');
 		$this->assertFileExists(realpath($td['zipped_path']));
