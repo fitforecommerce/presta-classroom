@@ -14,18 +14,10 @@ class VersionDownload {
 	function __construct($ndata) {
 		$this->data = $ndata;
 	}
-	public function is_downloaded()
+	public function is_downloaded($version)
 	{
-		$arDir = array();
-		$this->assert_download_dir();
-		$d = dir($this->download_target_dir());
-		while (false !== ($entry = $d->read())) {
-			if($entry != '.' && $entry != '..') {
-				array_push($arDir, $entry);
-			}
-		}
-		$d->close();
-		return $arDir;
+		if(file_exists($this->download_target_file($version))) return true;
+		return false;
 	}
 }
 ?>
