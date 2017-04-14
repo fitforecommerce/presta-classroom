@@ -36,6 +36,7 @@ class InstallerConfigType extends AbstractType {
 		foreach ($av as $k => $v) {
 			$rv[$v['version']] = $v['version'];
 		}
+		$rv = array_reverse($rv);
 		return $rv;
 	}
 }	
