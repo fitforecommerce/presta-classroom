@@ -25,8 +25,6 @@ class DownloadController extends Controller
 	public function download($version)
 	{
 		$this->get('app.downloader')->download($version);
-		$stat = $this->get('app.downloader')->status()['code'];
-		
 		return $this->render(
 			'download/download.html.twig',
 			array(
