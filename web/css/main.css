@@ -3,15 +3,28 @@ body {
 }
 
 label {
-    width: 20.0em;
+    display: block;
 }
 
+input {
+    width: 100%;
+}
+
+/* css for installer_config form */
 #installer_config {
     border: 1px solid #ccc;
+    padding: 1.0em;
+}
+#installer_config label {
+    width: 20.0em;
 }
 #installer_config_number_of_installations {
     width:4.0em;
 }
 .form_row {
-    margin: 1.0em 1.0em;
+    margin: 1.0em 0em;
+}
+.form_row.button {
+    text-align: right;
+    width: 100%;
 }

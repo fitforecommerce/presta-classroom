@@ -2,9 +2,15 @@
 {% block form_row %}
 {% spaceless %}
     <div class="form_row">
-        {{ form_label(form) }}
-        {{ form_errors(form) }}
+		{{ form_label(form) }}
+		{{ form_errors(form) }}
         {{ form_widget(form) }}
     </div>
 {% endspaceless %}
 {% endblock form_row %}
+
+{% block button_row %}
+    <div class="form_row button">
+        {{ form_widget(form) }}
+    </div>
+{% endblock button_row %}
