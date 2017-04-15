@@ -16,4 +16,4 @@ swiftmailer:
     disable_delivery: true
 
 parameters:
-    app.test_installations: 1
+    app.test_installations: 4
