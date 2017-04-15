@@ -61,11 +61,13 @@ class InstallerControllerTest extends WebTestCase
 	}
 	public function testFullInstallation()
 	{
-		$installations = 1;
-		if($installations < 3) {
-			error_log("\nWARNING:\ntesting a total of $installations number of installations in InstallerControllerTest. You may want to increase the number of installations for reliable testing!\n");
-		}
         $client = static::createClient();
+		
+		$installations = $client->getContainer()->getParameter('app.test_installations');;
+		if($installations < 3) {
+			error_log("\nWARNING:\ntesting a total of $installations number of installations in InstallerControllerTest.\nYou may want to increase the number of installations in /app/config/config_test.yml for reliable testing!\n");
+		}
+
 		$dp = $client->getContainer()->getParameter('app.default_shops_dir');
 		$this->file_helper()->remove(realpath($dp));
 		$this->assertDirectoryNotExists($dp.'/shop1');
