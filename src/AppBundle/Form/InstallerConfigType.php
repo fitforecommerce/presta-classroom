@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -22,6 +23,12 @@ class InstallerConfigType extends AbstractType {
 		)
 			->add('number_of_installations', IntegerType::class, array('data' => 1))
 			->add('server_path', TextType::class)
+			->add('overwrite_targets', CheckboxType::class, array(
+				'data' => false, 
+				'label' => 'Overwrite any existing target directories',
+				'required' => false
+				)
+			)
 			->add('submit', SubmitType::class);
 	}
 	public function configureOptions(OptionsResolver $resolver) {
