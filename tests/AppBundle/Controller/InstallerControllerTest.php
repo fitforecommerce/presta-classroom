@@ -77,8 +77,9 @@ class InstallerControllerTest extends WebTestCase
 		$form = $crawler->selectButton('Submit')->form();
 		$form['installer_config[number_of_installations]'] = $installations;
 		$form['installer_config[server_path]'] = $client->getContainer()->getParameter('app.default_shops_dir');
-		$client->submit($form);
+		$crawler = $client->submit($form);
 
+		# error_log("testFullInstallation: response:\n\n".$client->getResponse()->__toString());
 		for ($i=1; $i < ($installations + 1); $i++) { 
 			$this->assertDirectoryExists($dp.'/shop'.$i);
 			$this->assertFileExists($dp.'/shop'.$i.'/index.php');
