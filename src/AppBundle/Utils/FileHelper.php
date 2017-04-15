@@ -59,7 +59,6 @@ class FileHelper extends Filesystem {
 	 */
 	public function xcopy($source, $dest, $permissions = 0755)
 	{
-		error_log("FileHelper::xcopy $source to $dest");
 	    // Check for symlinks
 	    if (is_link($source)) {
 	        return symlink(readlink($source), $dest);
