@@ -14,3 +14,11 @@
         {{ form_widget(form) }}
     </div>
 {% endblock button_row %}
+
+{% block checkbox_row %}
+    <div class="form_row checkbox">
+        {{ form_widget(form) }}
+		{{ form_label(form) }}
+		{{ form_errors(form) }}
+    </div>
+{% endblock checkbox_row %}
