@@ -3,9 +3,8 @@ namespace AppBundle\Utils;
 
 use AppBundle\Controller\DefaultController;
 use AppBundle\Traits\StatusTrait;
+use AppBundle\Utils\FileHelper;
 use Symfony\Component\Config\Definition\Exception\Exception;
-
-use \ZipArchive;
 
 class Installer {
 
@@ -15,6 +14,7 @@ class Installer {
 
 	public function __construct()
 	{
+		$this->fs = new FileHelper();
 	}
 	public function run()
 	{
@@ -47,6 +47,7 @@ class Installer {
 		$this->check_target_dir();
 		$this->create_dirs($this->config()['server_path']);
 		$this->extract_installers();
+		error_log("Installer::copy_files finished:\n\t".print_r($this->status()));
 	}
 	private function check_target_dir()
 	{
@@ -59,9 +60,7 @@ class Installer {
 	{
 		for ($i=0; $i < $this->config()['number_of_installations']; $i++) { 
 			$td = $this->config()['server_path'].'/shop'.($i + 1);
-			if(file_exists($td)) {
-				throw new Exception("Target dir '$td' already exists.", 1);
-			}
+			$this->is_overwritable_target($td);
 			$this->create_dir($td);
 		};
 		$this->append_status_message("Successfully created the directories.");
@@ -69,13 +68,19 @@ class Installer {
 	}
 	private function extract_installers()
 	{
-		for ($i=0; $i < $this->config()['number_of_installations']; $i++) { 
-			$zip = new ZipArchive;
+		# extract the first installer then duplicate into the remaining dirs
+		$first_target = $this->config()['server_path'].'/shop1';
+		$this->is_overwritable_target($first_target);
+		if(!$this->fs->unzip($this->src_zip_file(), $first_target)) {
+			$this->set_status_message($this->fs->status_message());
+			$this->set_status_code(DefaultController::ERROR);
+			return false;
+		}
+
+		for ($i=1; $i < $this->config()['number_of_installations']; $i++) { 
 			$tmp_target = $this->config()['server_path'].'/shop'.($i + 1);
-			if ($zip->open($this->src_zip_file()) === TRUE) {
-			    $zip->extractTo($tmp_target);
-			    $zip->close();
-			} else {
+			$this->is_overwritable_target($tmp_target);
+			if(!$this->fs->xcopy($first_target, $tmp_target)) {
 				$this->set_status_message("<p>Error unzipping $tmp_target</p>");
 				$this->set_status_code(DefaultController::ERROR);
 			    return false;
@@ -84,6 +89,19 @@ class Installer {
 		$this->append_status_message("Successfully unzipped the installers.");
 		$this->set_status_code(DefaultController::SUCCESS);
 		return true;
+	}
+	private function is_overwritable_target($td)
+	{
+		if(file_exists($td) &! $this->overwrite_targets()) {
+			throw new Exception("Target dir '$td' already exists and overwriting is not allowed.", 1);
+		}
+	}
+	private function overwrite_targets()
+	{
+		if(isset($this->config()['overwrite_targets']) && $this->config()['overwrite_targets']) {
+			return true;
+		}
+		return false;
 	}
 	private function assert_target_dir($td)
 	{

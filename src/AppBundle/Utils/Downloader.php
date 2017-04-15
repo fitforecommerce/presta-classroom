@@ -55,16 +55,12 @@ class Downloader {
 	{
 		$unzipped_target_path = preg_replace('/\.zip/', '', $target_file).'.unzipped';
 		$this->fs->mkdir($unzipped_target_path);
-		$zip = new ZipArchive;
-		if ($zip->open($target_file) === TRUE) {
-		    $zip->extractTo($unzipped_target_path.'/');
-		    $zip->close();
-		    return true;
-		} else {
-			$this->set_status_message("<p>Error unzipping $target_file</p>");
-			$this->set_status_code(DefaultController::ERROR);
-		    return false;
+		if(!$this->fs->unzip($target_file, $unzipped_target_path)) {
+			$this->append_status_message($this->fs->status_message());
+			$this->set_status_code($this->fs->status_code());
+			return false;
 		}
+		return true;
 	}
 	private function assert_download_dir()
 	{
