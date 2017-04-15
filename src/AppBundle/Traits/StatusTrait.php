@@ -20,6 +20,10 @@ trait StatusTrait
 	{
 		$this->status = $nstat;
 	}
+	public function status_code()
+	{
+		return $this->status['code'];
+	}
 	public function set_status_code($ncode)
 	{
 		$this->status['code'] = $ncode;
