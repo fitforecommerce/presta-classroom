@@ -61,7 +61,7 @@ class Installer {
 		for ($i=0; $i < $this->config()['number_of_installations']; $i++) { 
 			$td = $this->config()['server_path'].'/shop'.($i + 1);
 			$this->is_overwritable_target($td);
-			$this->create_dir($td);
+			$this->create_dir($td, $this->overwrite_targets());
 		};
 		$this->append_status_message("Successfully created the directories.");
 		$this->set_status_code(DefaultController::SUCCESS);
@@ -70,7 +70,6 @@ class Installer {
 	{
 		# extract the first installer then duplicate into the remaining dirs
 		$first_target = $this->config()['server_path'].'/shop1';
-		$this->is_overwritable_target($first_target);
 		if(!$this->fs->unzip($this->src_zip_file(), $first_target)) {
 			$this->set_status_message($this->fs->status_message());
 			$this->set_status_code(DefaultController::ERROR);
@@ -79,7 +78,6 @@ class Installer {
 
 		for ($i=1; $i < $this->config()['number_of_installations']; $i++) { 
 			$tmp_target = $this->config()['server_path'].'/shop'.($i + 1);
-			$this->is_overwritable_target($tmp_target);
 			if(!$this->fs->xcopy($first_target, $tmp_target)) {
 				$this->set_status_message("<p>Error unzipping $tmp_target</p>");
 				$this->set_status_code(DefaultController::ERROR);
@@ -108,8 +106,11 @@ class Installer {
 		if(file_exists($td)) return true;
 		return $this->create_dir($td);
 	}
-	private function create_dir($td)
+	private function create_dir($td, $overwrite=false)
 	{
+		if(is_dir($td) && $overwrite) {
+			$this->fs->remove($td);
+		}
 		if(!@mkdir($td)) {
 			$error = error_get_last();
 			$this->set_status_code(DefaultController::ERROR);
