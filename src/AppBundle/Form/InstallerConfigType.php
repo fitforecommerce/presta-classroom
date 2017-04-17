@@ -29,6 +29,7 @@ class InstallerConfigType extends AbstractType {
 				'required' => false
 				)
 			)
+			->add('web_root_url', TextType::class, array('data' => 'http://localhost'))
 			->add('submit', SubmitType::class);
 	}
 	public function configureOptions(OptionsResolver $resolver) {
