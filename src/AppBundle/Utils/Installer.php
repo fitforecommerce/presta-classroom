@@ -46,13 +46,14 @@ class Installer {
 		$this->check_target_dir();
 		$this->create_dirs($this->config()['server_path']);
 		$this->extract_installers();
-		error_log("Installer::copy_files finished:\n\t".print_r($this->status()));
 	}
 	private function run_installers()
 	{
 		for ($i=1; $i <= $this->config()['number_of_installations']; $i++) {
 			$tmp_conf  = $this->config();
 			$tmp_conf['server_path'] = $this->server_path_for_shop($i);
+			$tmp_conf['shop_index'] = $i;
+
 			$tmp_pcli = new PrestaCliInstallerRunner($tmp_conf);
 			$tmp_pcli->run();
 			$this->append_status_message($tmp_pcli->status_message());

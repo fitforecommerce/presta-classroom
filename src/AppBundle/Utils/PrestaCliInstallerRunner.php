@@ -23,7 +23,7 @@ class PrestaCliInstallerRunner {
 		# When allowing user-supplied data to be passed to this function, use escapeshellarg() or escapeshellcmd() 
 		# to ensure that users cannot trick the system into executing arbitrary commands.
 		# system($this->command());
-		$this->set_status_message('PrestaCliInstallerRunner: Execute command:<br><code>'.$this->command().'</code>');
+		$this->set_status_message('PrestaCliInstallerRunner: Execute command for shop '.$this->config['shop_index'].':<br><code>'.$this->command().'</code>');
 		$this->set_status_code(DefaultController::VOID);
 		return true;
 	}

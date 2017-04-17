@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Form;
 use AppBundle\Entity\VersionDownload;
+use AppBundle\Entity\InstallerConfig;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,6 +16,11 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class InstallerConfigType extends AbstractType {
+
+	public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('number_of_installations', new Assert\GreaterThan(0));
+	}
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder->add(
 			'presta_version', 
@@ -32,8 +38,11 @@ class InstallerConfigType extends AbstractType {
 			->add('web_root_url', TextType::class, array('data' => 'http://localhost'))
 			->add('submit', SubmitType::class);
 	}
-	public function configureOptions(OptionsResolver $resolver) {
-		# $resolver->setDefaults(array( 'data_class' => Post::class,)); 
+	public function configureOptions(OptionsResolver $resolver)
+	{
+	    $resolver->setDefaults(array(
+	        'data_class' => InstallerConfig::class,
+	    ));
 	}
 	private function versions_choice()
 	{

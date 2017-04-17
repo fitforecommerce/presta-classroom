@@ -1,10 +1,12 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Form\InstallerConfigType;
+use AppBundle\Entity\InstallerConfig;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use AppBundle\Form\InstallerConfigType;
 use Symfony\Component\HttpFoundation\Request;
 
 class InstallerController extends Controller
@@ -15,17 +17,18 @@ class InstallerController extends Controller
      */
     public function configure(Request $request)
     {
-        $f = $this->createForm(InstallerConfigType::class);
+		$conf = new InstallerConfig();
+		# $conf->
+        $f = $this->createForm(InstallerConfigType::class, $conf);
 		$f->get('server_path')->setData($this->default_server_path());
 
 	    $f->handleRequest($request);
 
 		if ($f->isSubmitted() && $f->isValid()) {
-			$task = $f->getData();
-			return $this->execute($request);
+			return $this->execute($f->getData());
 		}
 
-        return $this->render(
+		return $this->render(
 			'install/configure.html.twig', 
 			array('form' => $f->createView())
 		);
@@ -34,9 +37,8 @@ class InstallerController extends Controller
     /**
 	 * @Route("/runinstall")
      */
-	public function execute(Request $request)
+	public function execute($config)
 	{
-		$config = $request->get('installer_config');
 		$config['presta_source_dir'] = $this->getParameter('app.presta_versions_download_dir');
 
 		$installer = $this->get('app.installer');
