@@ -3,7 +3,7 @@
 {% spaceless %}
     <div class="form_row">
 		{{ form_label(form) }}
-		{{ form_errors(form) }}
+		<div class="alert-danger">{{ form_errors(form) }}</div>
         {{ form_widget(form) }}
     </div>
 {% endspaceless %}
