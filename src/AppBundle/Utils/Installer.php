@@ -42,17 +42,17 @@ class Installer {
 	}
 	private function copy_files()
 	{
-		$this->append_status_message("Install to ".$this->config()['server_path']);
+		$this->append_status_message("Install to ".$this->config->getServerPath());
 		$this->check_target_dir();
-		$this->create_dirs($this->config()['server_path']);
+		$this->create_dirs($this->config->getServerPath());
 		$this->extract_installers();
 	}
 	private function run_installers()
 	{
-		for ($i=1; $i <= $this->config()['number_of_installations']; $i++) {
+		for ($i=1; $i <= $this->config->getNumberOfInstallations(); $i++) {
 			$tmp_conf  = $this->config();
-			$tmp_conf['server_path'] = $this->server_path_for_shop($i);
-			$tmp_conf['shop_index'] = $i;
+			$tmp_conf->setServerPath($this->server_path_for_shop($i));
+			$tmp_conf->setShopIndex($i);
 
 			$tmp_pcli = new PrestaCliInstallerRunner($tmp_conf);
 			$tmp_pcli->run();
@@ -61,18 +61,18 @@ class Installer {
 	}
 	private function check_target_dir()
 	{
-		$td = $this->config()['server_path'];
+		$td = $this->config->getServerPath();
 		if(!$this->assert_target_dir($td)) {
 			throw new Exception("Unable to create target dir '$td'", 1);
 		}
 	}
 	private function server_path_for_shop($i)
 	{
-		return $this->config()['server_path'].'/shop'.$i;
+		return $this->config->getServerPath().'/shop'.$i;
 	}
 	private function create_dirs()
 	{
-		for ($i=1; $i <= $this->config()['number_of_installations']; $i++) { 
+		for ($i=1; $i <= $this->config->getNumberOfInstallations(); $i++) { 
 			$this->is_overwritable_target($this->server_path_for_shop($i));
 			$this->create_dir($this->server_path_for_shop($i), $this->overwrite_targets());
 		};
@@ -88,7 +88,7 @@ class Installer {
 			return false;
 		}
 
-		for ($i=2; $i <= $this->config()['number_of_installations']; $i++) { 
+		for ($i=2; $i <= $this->config->getNumberOfInstallations(); $i++) { 
 			if(!$this->fs->xcopy($this->server_path_for_shop(1), $this->server_path_for_shop($i))) {
 				$this->set_status_message("<p>Error unzipping $tmp_target</p>");
 				$this->set_status_code(DefaultController::ERROR);
@@ -107,7 +107,7 @@ class Installer {
 	}
 	private function overwrite_targets()
 	{
-		if(isset($this->config()['overwrite_targets']) && $this->config()['overwrite_targets']) {
+		if($this->config->getOverwriteTargets()) {
 			return true;
 		}
 		return false;
@@ -132,8 +132,8 @@ class Installer {
 	}
 	private function src_zip_file()
 	{
-		$rv  = $this->config()['presta_source_dir'];
-		$rv .= '/'.$this->config()['presta_version'].'.unzipped';
+		$rv  = $this->config()->getPrestaSourceDir();
+		$rv .= '/'.$this->config()->getPrestaVersion().'.unzipped';
 		$rv .= '/prestashop.zip';
 		return $rv;
 	}

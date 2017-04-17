@@ -14,6 +14,9 @@ class InstallerConfig
 	protected $overwrite_targets;
 	protected $web_root_url;
 
+	protected $presta_source_dir;
+	protected $shop_index;
+
 	public function __construct() {
 		$this->init_data();
 	}
@@ -57,12 +60,30 @@ class InstallerConfig
 	{
 		$this->web_root_url = $nv;
 	}
+	public function getPrestaSourceDir()
+	{
+		return $this->presta_source_dir;
+	}
+	public function setPrestaSourceDir($nv)
+	{
+		$this->presta_source_dir = $nv;
+	}
+	public function getShopIndex()
+	{
+		return $this->shop_index;
+	}
+	public function setShopIndex($nv)
+	{
+		$this->shop_index = $nv;
+	}
 	private function init_data()
 	{
 		$this->number_of_installations = 1;
 		$this->server_path = '';
 		$this->overwrite_targets = false;
 		$this->web_root_url = 'localhost';
+		$this->presta_source_dir = '';
+		$this->shop_index = 0;
 	}
 }
 ?>

@@ -23,7 +23,7 @@ class PrestaCliInstallerRunner {
 		# When allowing user-supplied data to be passed to this function, use escapeshellarg() or escapeshellcmd() 
 		# to ensure that users cannot trick the system into executing arbitrary commands.
 		# system($this->command());
-		$this->set_status_message('PrestaCliInstallerRunner: Execute command for shop '.$this->config['shop_index'].':<br><code>'.$this->command().'</code>');
+		$this->set_status_message('PrestaCliInstallerRunner: Execute command for shop '.$this->config->getShopIndex().':<br><code>'.$this->command().'</code>');
 		$this->set_status_code(DefaultController::VOID);
 		return true;
 	}
@@ -55,7 +55,7 @@ class PrestaCliInstallerRunner {
 		# When allowing user-supplied data to be passed to this function, use escapeshellarg() or escapeshellcmd() 
 		# to ensure that users cannot trick the system into executing arbitrary commands.
 		$rv  = 'php ';
-		$rv .= $this->config['server_path'].'/install/index_cli.php ';
+		$rv .= $this->config->getServerPath().'/install/index_cli.php ';
 		foreach($this->user_parameters() as $k => $v) {
 			$rv .= '--' . $k . '=' . escapeshellarg($v);
 		}
