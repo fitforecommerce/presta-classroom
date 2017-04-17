@@ -21,11 +21,10 @@ class Installer {
 		$this->append_status_message('<code>'.print_r($this->config(), true).'</code>');
 		try {
 			$this->copy_files();
+			$this->run_installers();
 		} catch (Exception $e) {
 			$this->set_status_code(DefaultController::ERROR);
 			$msg  = "<p><strong>". $e->getMessage()."</strong><br>";
-			# $msg .= "<code>".preg_replace('/#\d+.*/', '$0<br>', $e->getTraceAsString())."</code>";
-			# $msg .= "</p>";
 			$this->append_status_message($msg);
 			return false;
 		}
@@ -49,6 +48,16 @@ class Installer {
 		$this->extract_installers();
 		error_log("Installer::copy_files finished:\n\t".print_r($this->status()));
 	}
+	private function run_installers()
+	{
+		for ($i=1; $i <= $this->config()['number_of_installations']; $i++) {
+			$tmp_conf  = $this->config();
+			$tmp_conf['server_path'] = $this->server_path_for_shop($i);
+			$tmp_pcli = new PrestaCliInstallerRunner($tmp_conf);
+			$tmp_pcli->run();
+			$this->append_status_message($tmp_pcli->status_message());
+		}
+	}
 	private function check_target_dir()
 	{
 		$td = $this->config()['server_path'];
@@ -56,12 +65,15 @@ class Installer {
 			throw new Exception("Unable to create target dir '$td'", 1);
 		}
 	}
+	private function server_path_for_shop($i)
+	{
+		return $this->config()['server_path'].'/shop'.$i;
+	}
 	private function create_dirs()
 	{
-		for ($i=0; $i < $this->config()['number_of_installations']; $i++) { 
-			$td = $this->config()['server_path'].'/shop'.($i + 1);
-			$this->is_overwritable_target($td);
-			$this->create_dir($td, $this->overwrite_targets());
+		for ($i=1; $i <= $this->config()['number_of_installations']; $i++) { 
+			$this->is_overwritable_target($this->server_path_for_shop($i));
+			$this->create_dir($this->server_path_for_shop($i), $this->overwrite_targets());
 		};
 		$this->append_status_message("Successfully created the directories.");
 		$this->set_status_code(DefaultController::SUCCESS);
@@ -69,16 +81,14 @@ class Installer {
 	private function extract_installers()
 	{
 		# extract the first installer then duplicate into the remaining dirs
-		$first_target = $this->config()['server_path'].'/shop1';
-		if(!$this->fs->unzip($this->src_zip_file(), $first_target)) {
+		if(!$this->fs->unzip($this->src_zip_file(), $this->server_path_for_shop(1))) {
 			$this->set_status_message($this->fs->status_message());
 			$this->set_status_code(DefaultController::ERROR);
 			return false;
 		}
 
-		for ($i=1; $i < $this->config()['number_of_installations']; $i++) { 
-			$tmp_target = $this->config()['server_path'].'/shop'.($i + 1);
-			if(!$this->fs->xcopy($first_target, $tmp_target)) {
+		for ($i=2; $i <= $this->config()['number_of_installations']; $i++) { 
+			if(!$this->fs->xcopy($this->server_path_for_shop(1), $this->server_path_for_shop($i))) {
 				$this->set_status_message("<p>Error unzipping $tmp_target</p>");
 				$this->set_status_code(DefaultController::ERROR);
 			    return false;
