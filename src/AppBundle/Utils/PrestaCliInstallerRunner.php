@@ -25,8 +25,6 @@ class PrestaCliInstallerRunner {
 		# system($this->command());
 		$this->set_status_message('PrestaCliInstallerRunner: Execute command:<br><code>'.$this->command().'</code>');
 		$this->set_status_code(DefaultController::VOID);
-		error_log($this->command());
-		echo "<p>PrestaCliInstallerRunner: command: ".$this->command()."</p>";
 		return true;
 	}
 	private function set_parameter($key, $nval)
