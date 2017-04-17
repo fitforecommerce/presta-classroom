@@ -33,9 +33,19 @@ trait StatusTrait
 	{
 		$this->status['message'] = [$nstr];
 	}
+	public function status_message()
+	{
+		return $this->status['message'];
+	}
 	public function append_status_message($nstr)
 	{
-		array_push($this->status['message'], $nstr);
+		if(!is_array($nstr)) {
+			array_push($this->status['message'], $nstr);
+		} else {
+			foreach ($nstr as $v) {
+				$this->status['message'][] = $v;
+			}
+		}
 	}
 	private function css_class_for_code($stat)
 	{
