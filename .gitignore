@@ -17,3 +17,5 @@
 /vendor/
 /web/bundles/
 /web/shops
+
+private*
