@@ -2,6 +2,10 @@ body {
 	padding: 4.0em;
 }
 
+nav {
+  margin-bottom: 4.0rem;
+}
+
 label {
     display: block;
 }
@@ -9,6 +13,7 @@ label {
 input {
     width: 100%;
 }
+
 
 /* css for installer_config form */
 #installer_config {
