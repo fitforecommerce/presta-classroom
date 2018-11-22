@@ -18,9 +18,19 @@ class InstallerController extends Controller
     public function configure(Request $request)
     {
 		$conf = new InstallerConfig();
-		# $conf->
-        $f = $this->createForm(InstallerConfigType::class, $conf);
-		$f->get('server_path')->setData($this->default_server_path());
+
+    $f = $this->createForm(InstallerConfigType::class, $conf, array(
+      'downloader' => $this->get('app.downloader')
+    ));
+    try {
+      $f->get('server_path')->setData($this->default_server_path());  
+    } catch (\Exception $e) {
+      return $this->render('install/ioexception.html.twig', array(
+          'message' => $e->getMessage().'<p>Please check your access rights for folder <code>'.$this->getParameter('app.default_shops_dir').'</code>',
+          'type' => 'alert-warning'
+        )
+      );
+    }
 
 	    $f->handleRequest($request);
 

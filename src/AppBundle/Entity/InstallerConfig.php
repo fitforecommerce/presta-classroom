@@ -5,6 +5,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class InstallerConfig
 {
+
 	protected $presta_version;
 	/**
 	* @Assert\GreaterThan(0)
@@ -17,9 +18,10 @@ class InstallerConfig
 	protected $presta_source_dir;
 	protected $shop_index;
 
-	public function __construct() {
-		$this->init_data();
-	}
+  public function __construct() 
+  {
+    $this->init_data();
+  }
 	public function getPrestaVersion()
 	{
 		return $this->presta_version;

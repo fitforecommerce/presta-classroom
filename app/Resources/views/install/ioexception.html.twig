@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}File System Error{% endblock %}
+
+{% block body %}
+
+	<h1>Exception</h1>
+
+	<div class="alert {{ type }}">
+    {{ message|raw }}
+  </div>
+
+{% endblock %}

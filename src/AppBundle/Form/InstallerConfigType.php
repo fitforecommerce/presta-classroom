@@ -2,6 +2,7 @@
 namespace AppBundle\Form;
 use AppBundle\Entity\VersionDownload;
 use AppBundle\Entity\InstallerConfig;
+use AppBundle\Utils\Downloader;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,6 +23,8 @@ class InstallerConfigType extends AbstractType {
         $metadata->addPropertyConstraint('number_of_installations', new Assert\GreaterThan(0));
 	}
 	public function buildForm(FormBuilderInterface $builder, array $options) {
+    $this->downloader = $options['downloader'];
+
 		$builder->add(
 			'presta_version', 
 			ChoiceType::class, 
@@ -43,13 +46,14 @@ class InstallerConfigType extends AbstractType {
 	    $resolver->setDefaults(array(
 	        'data_class' => InstallerConfig::class,
 	    ));
+      $resolver->setRequired('downloader');
 	}
 	private function versions_choice()
 	{
 		$rv = [];
-		$av = VersionDownload::available_versions();
+		$av = $this->downloader->available_versions();
 		foreach ($av as $k => $v) {
-			$rv[$v['version']] = $v['version'];
+			$rv[$v->version()] = $v->version();
 		}
 		$rv = array_reverse($rv);
 		return $rv;
