@@ -14,6 +14,9 @@ input {
     width: 100%;
 }
 
+table.downloads tr{
+  height: 4.0rem;
+}
 
 /* css for installer_config form */
 #installer_config {
