@@ -1,20 +1,28 @@
-<ul class="list-group">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Version</td>
+      <th scope="col">Status</td>
+    </tr>
+  </thead>
   {% for value in versions %}
-    <li class="list-group-item">
-      {{ value.version }}
-      {% if value.is_downloaded %}
-        <span><i class="fa fa-check"></i> Downloaded</span>
-      {% else %}
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-          <a href="{{ path('download_version', {'version': value.version}) }}">
-            <i class="fa fa-download"></i>
-          </a>
-          &nbsp;
-          <a href="{{ path('download_version', {'version': value.version}) }}">
-            Download
-          </a>
-        </button>
+    <tr class="">
+      <th scope="row">{{ value.version }}</th>
+      <td>
+        {% if value.is_downloaded %}
+          <span class="text-success"><i class="fa fa-check"></i> Downloaded</span>
+        {% else %}
+          <button type="button" class="btn btn-default btn-light" data-toggle="dropdown">
+            <a href="{{ path('download_version', {'version': value.version}) }}">
+              <i class="fa fa-download"></i>
+            </a>
+            &nbsp;
+            <a href="{{ path('download_version', {'version': value.version}) }}">
+              Download
+            </a>
+          </button>
       {% endif %}
-      </li>
+      </td>
+    </tr>
     {% endfor %}
   </ul>
