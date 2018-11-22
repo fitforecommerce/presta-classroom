@@ -1,16 +1,20 @@
 <ul class="list-group">
-	{% for value in versions %}
-		<li class="list-group-item">
-			{{ value.version }}
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					<a href="{{ path('download_version', {'version': value.version}) }}">
-						<i class="fa fa-download"></i>
-					</a>
-					&nbsp;
-					<a href="{{ path('download_version', {'version': value.version}) }}">
-					Download
-					</a>
-				</button>
-		</li>
-	{% endfor %}
-</ul>
+  {% for value in versions %}
+    <li class="list-group-item">
+      {{ value.version }}
+      {% if value.is_downloaded %}
+        <span><i class="fa fa-check"></i> Downloaded</span>
+      {% else %}
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <a href="{{ path('download_version', {'version': value.version}) }}">
+            <i class="fa fa-download"></i>
+          </a>
+          &nbsp;
+          <a href="{{ path('download_version', {'version': value.version}) }}">
+            Download
+          </a>
+        </button>
+      {% endif %}
+      </li>
+    {% endfor %}
+  </ul>

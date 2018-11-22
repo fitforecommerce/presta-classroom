@@ -1,23 +1,24 @@
 <?php
 namespace AppBundle\Entity;
 
-use Symfony\Component\Yaml\Yaml;
-
 class VersionDownload {
 
-	public static function available_versions()
-	{
-		$fp = realpath(__DIR__.'/../../../app/config/prestashop_versions_dev.yml');
-		$l = Yaml::parse(file_get_contents($fp));
-		return $l;
-	}
-	function __construct($ndata) {
+	function __construct($ndata, $target_path) {
 		$this->data = $ndata;
+    $this->target_path = $target_path;
 	}
-	public function is_downloaded($version)
+	public function is_downloaded()
 	{
-		if(file_exists($this->download_target_file($version))) return true;
-		return false;
+    error_log("VersionDownload ".$this->download_target_path());
+		return file_exists($this->download_target_path());
 	}
+  public function version()
+  {
+    return $this->data['version'];
+  }
+  private function download_target_path()
+  {
+    return $this->target_path.'/'.$this->data['version'].'.zip';
+  }
 }
 ?>

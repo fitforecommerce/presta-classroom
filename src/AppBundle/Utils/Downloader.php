@@ -9,6 +9,7 @@ use AppBundle\Utils\FileHelper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Yaml\Yaml;
 
 use \ZipArchive;
 
@@ -36,7 +37,16 @@ class Downloader {
 	}
 	public function available_versions()
 	{
-		return VersionDownload::available_versions();
+    if(isset($this->available_versions)) return $this->available_versions;
+
+		$fp = realpath(__DIR__.'/../../../app/config/prestashop_versions_dev.yml');
+		$data = Yaml::parse(file_get_contents($fp));
+    $downloads = [];
+    foreach ($data as $v => $d) {
+      $downloads[$v] = new VersionDownload($d, $this->target_path);
+    }
+    $this->available_versions = $downloads;
+		return $this->available_versions;
 	}
 	public function downloaded_versions()
 	{
