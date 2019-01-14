@@ -86,7 +86,11 @@ class Installer {
 	}
   public function cleanup()
   {
-    
+    $fi = $this->first_shop_index();
+		for ($i = $fi; $i < $fi + $this->config->get('number_of_installations'); $i++) {
+			$this->fs->remove($this->server_path_for_shop($i).'/install');
+      $this->fs->rename($this->server_path_for_shop($i).'/admin', $this->server_path_for_shop($i).'/admin123');
+		}
   }
 	private function check_target_dir()
 	{
