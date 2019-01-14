@@ -4,6 +4,7 @@ A platform for installing multiple Prestashop instances easily for use in school
 ## Links
 * Info on setting up fluentd logging on macos: https://docs.fluentd.org/v1.0/articles/install-by-dmg
 
+## Disclaimer
 
 ![Co-funded by the Erasmus+ Programme of the European Union](https://fitforecommerce.github.io/img/co-funded-erasmus+.jpg)
 
