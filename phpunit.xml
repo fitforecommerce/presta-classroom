@@ -15,5 +15,8 @@
     <testsuite name="standard">
       <directory suffix="Test.php">tests</directory>
     </testsuite>
+    <testsuite name="Installer">
+      <directory suffix="Test.php">tests/installer</directory>
+    </testsuite>
   </testsuites>
 </phpunit>
