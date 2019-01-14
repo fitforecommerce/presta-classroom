@@ -1,0 +1,13 @@
+---
+presta_versions_download_dir: /prestaversions
+shops_install_dir: /shops
+availableversions:
+  1.7.4.4:
+    url: "https://download.prestashop.com/download/releases/prestashop_1.7.4.4.zip"
+    version: 1.7.4.4
+  1.7.0.4:
+    url: "https://download.prestashop.com/download/releases/prestashop_1.7.0.4.zip"
+    version: 1.7.0.4
+  1.7.0.3:
+    url: "https://download.prestashop.com/download/releases/prestashop_1.7.0.3.zip"
+    version: 1.7.0.3

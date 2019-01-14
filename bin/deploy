@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+src = File.expand_path("..", File.dirname(__FILE__))+"/"
+trg = File.realdirpath(Dir.home + '/Sites/prestaclassroom')
+
+cmd  = ["rsync -av --progress \"#{src}\" \"#{trg}\" --exclude .git --exclude bin --delete"]
+cmd << "cp \"#{src}/.htaccess\" \"#{trg}\""
+
+cmd.each do |c|
+  puts c
+  system c
+end

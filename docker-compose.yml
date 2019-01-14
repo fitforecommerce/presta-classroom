@@ -1,0 +1,11 @@
+# see https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php-apache-dev.html
+
+version: '3'
+services:
+    apache2:
+        build: ./phpdocker/php-apache-dev
+        volumes:
+            - .:/app
+        ports:
+            - 8080:80
+            - 8443:443

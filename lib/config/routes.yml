@@ -1,0 +1,44 @@
+---
+base_path: /public
+
+routes:
+  "/index":
+    controllerClass: someClass.indexAction
+    action: index
+    method: GET
+  "/login/validate":
+    controllerClass: LoginController
+    action: validate
+    method: POST
+  "/logout":
+    controllerClass: LoginController
+    action: logout
+    method: GET
+  "/dashboard":
+    controllerClass: DashboardController
+    action: showDashboard
+    method: GET
+  "/download":
+    controllerClass: DownloadController
+    action: index
+    method: GET
+  "/download/{version}":
+    controllerClass: DownloadController
+    action: download
+    method: GET
+  "/install":
+    controllerClass: InstallerController
+    action: configure
+    method: GET
+  "/install/execute":
+    controllerClass: InstallerController
+    action: execute
+    method: POST
+  "/install/ajaxexecute":
+    controllerClass: InstallerController
+    action: ajax_execute
+    method: POST
+  "/install/done":
+    controllerClass: InstallerController
+    action: done
+    method: GET

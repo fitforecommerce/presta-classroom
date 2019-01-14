@@ -1,0 +1,48 @@
+main {
+  min-height: 20rem;
+}
+main, footer {
+	padding: 2.0rem 4.0rem;
+}
+footer {
+  text-align: center;
+}
+footer p {
+  margin: 0.2rem 0em;
+}
+footer .social {
+  font-size: 2.0em;
+}
+nav {
+  margin-bottom: 2.0rem;
+}
+
+label {
+    display: block;
+}
+
+table.downloads tr{
+  height: 4.0rem;
+}
+
+/* css for installer_config form */
+#installer_config {
+    border: 1px solid #ccc;
+    padding: 1.0em;
+}
+#installer_config label {
+    width: 20.0em;
+}
+#installer_config_number_of_installations {
+    width:4.0em;
+}
+.form_row {
+    margin: 1.0em 0em;
+}
+.form_row.button {
+    text-align: right;
+    width: 100%;
+}
+.form_row.checkbox {
+    left: 2.0em;
+}

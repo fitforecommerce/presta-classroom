@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^public/index\.php$ - [L]
+  RewriteCond %{REQUEST_URI} !/public/assets
+  RewriteCond %{REQUEST_URI} !/page2
+  RewriteCond %{REQUEST_FILENAME} !-f 
+  RewriteCond %{REQUEST_FILENAME} !-d 
+  RewriteRule . /public/index.php [L] 
+</IfModule>
