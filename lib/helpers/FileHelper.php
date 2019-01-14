@@ -32,10 +32,22 @@ class FileHelper {
   public function remove($target_path)
   {
     try {
-      system('rm -rf ".$target_path."', $stat);
+      $cmd = "rm -rf '".$target_path."'";
+      system($cmd, $stat);
     } catch (Exception $e) {
 			error_log("ERROR when removing file $target_path:\n" . $e);
 			$this->set_status_message("<p>Could not delete file in '$target_path' got error <code>$e</code></p>");
+			$this->set_status_code = (MainController::ERROR);
+    }
+  }
+  public function rename($src_path, $target_path)
+  {
+    try {
+      $cmd = "mv '".$src_path."' '".$target_path."'";
+      system($cmd, $stat);
+    } catch (Exception $e) {
+			error_log("ERROR when renaming $src_path -> $target_path:\n" . $e);
+			$this->set_status_message("<p>Could not rename file '$src_path' to '$target_path'</p>");
 			$this->set_status_code = (MainController::ERROR);
     }
   }
