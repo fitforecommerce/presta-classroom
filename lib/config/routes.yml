@@ -42,3 +42,7 @@ routes:
     controllerClass: InstallerController
     action: done
     method: GET
+  "/configure":
+    controllerClass: ConfigurationController
+    action: configure
+    method: GET
