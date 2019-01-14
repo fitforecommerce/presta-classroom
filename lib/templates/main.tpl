@@ -20,7 +20,7 @@
     {/if}
     <main>
       {block name=title}
-        {$title}
+        <h1>{$title}</h1>
       {/block}
       {if $msg != '' }
         <div id="flashmessage">
