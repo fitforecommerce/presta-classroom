@@ -6,6 +6,7 @@ ini_set('max_execution_time', 5);
 $d = dirname(__FILE__);
 
 require_once($d.'/includes/include.inc.php');
+require_once($d.'/helpers/mysqlidb.php');
 
 # Traits
 require_once($d.'/traits/DataTrait.php');
@@ -46,6 +47,7 @@ require_once($d.'/helpers/Downloader.php');
 # Controllers
 require_once($d.'/controllers/MainController.php');
 require_once($d.'/controllers/LoginController.php');
+require_once($d.'/controllers/ConfigurationController.php');
 require_once($d.'/controllers/DashboardController.php');
 require_once($d.'/controllers/DownloadController.php');
 require_once($d.'/controllers/InstallerController.php');

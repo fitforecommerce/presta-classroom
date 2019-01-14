@@ -1,5 +1,6 @@
 <?php
 
+require_once(dirname(__FILE__).'/InstallerTestSetupTrait.php');
 require_once(dirname(__FILE__).'/../../lib/include.inc.php');
 
 use PHPUnit\Framework\TestCase;
@@ -7,12 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 final class AssertDirsTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-        $this->tdir = 'public/testshops';
-        system("rm -rf $this->tdir");
-    }
+    use InstallerTestSetupTrait;
+
     public function testShopDirsCreated()
     {
       $this->assertFileNotExists($this->tdir);
