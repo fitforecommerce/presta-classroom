@@ -11,3 +11,9 @@ availableversions:
   1.7.0.3:
     url: "https://download.prestashop.com/download/releases/prestashop_1.7.0.3.zip"
     version: 1.7.0.3
+dbconfig:
+  host: mysql
+  port: 8989
+  user: root
+  password: classroot
+  database: prestaclassroom
