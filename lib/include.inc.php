@@ -57,6 +57,7 @@ require_once($d.'/helpers/Route.php');
 require_once($d.'/helpers/Router.php');
 require_once($d.'/helpers/RequestParser.php');
 require_once($d.'/helpers/Installer.php');
+require_once($d.'/helpers/DatabaseInstaller.php');
 require_once($d.'/helpers/PrestaCliInstallerRunner.php');
 
 ?>

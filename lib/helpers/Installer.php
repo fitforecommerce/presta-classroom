@@ -25,6 +25,8 @@ class Installer {
   #
   public function setup_db()
   {
+    $dbi = new DatabaseInstaller($this->config);
+    $dbi->run();
     $this->append_status_message("yoho set up the database");
     return true;
   }

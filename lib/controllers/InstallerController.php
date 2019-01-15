@@ -50,7 +50,10 @@ class InstallerController extends MainController
 
     $step = $_POST['startId'];
     $steps_total = count($this->install_steps());
+
     $action = $this->install_steps()[$step]['action'];
+
+    if($action!='setup_db') return true;
 
     try {
       $this->installer_config()->set_from_post('installer_config');
@@ -86,7 +89,7 @@ class InstallerController extends MainController
   {
     return array(
       [ 'ui_string' => 'Set up database',
-        'ui_hint' => 'This step is not yet implemented!',
+        'ui_hint' => '',
         'action' => 'setup_db'
       ],
       [ 'ui_string' => 'Make sure directories exist',
