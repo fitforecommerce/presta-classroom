@@ -5,8 +5,8 @@ function ajax_error_handler($code, $message, $file, $line)
   $stat = json_encode([
     'error'   => true,
     'message' => '<p>Fatal error caught <code>'.$code."\n".$message."\nin file: $line::$file</code>",
-    'lastId' => $_POST['startId'],
-    'numFiles' => 'undefined',
+    'lastStepId' => $_POST['stepId'],
+    'stepsTotal' => 'undefined',
     'postdata' => $_POST
   ]);
 }
@@ -48,24 +48,37 @@ class InstallerController extends MainController
       xdebug_disable();
     }
 
-    $step = $_POST['startId'];
-    $steps_total = count($this->install_steps());
-
-    $action = $this->install_steps()[$step]['action'];
-
-    if($action!='setup_db') return true;
-
     try {
       $this->installer_config()->set_from_post('installer_config');
+      $step = $_POST['stepId'];
+      $step_shop_index = $_POST['stepShopIndex'];
+      $steps_total = count($this->install_steps()); # * $this->installer_config()->get('number_of_installations');
+      $action = $this->install_steps()[$step]['action'];
+      error_log("InstallerController:: execute action -> '$action'");
+
+      if($action!='setup_db') {
+        $stat = json_encode([
+          'error'   => false,
+          'message' => 'Action '.$action.' done',
+          'lastStepId' => $step + 1,
+          'stepsTotal' => $steps_total,
+          'stepShopIndex' => $step_shop_index
+        ]);
+        echo $stat;
+        return true;
+      }
+
       error_log('InstallerController::ajax_execute(): installer_config ' . print_r($this->installer_config(), true));
       $installer = new Installer($this->installer_config());
-      $installer->$action();
+      $installer->$action($step_shop_index);
     } catch (Exception $e) {
       $stat = json_encode([
         'error'   => true,
         'message' => '<p>Error in step '.$step.': <code>'.$e->getMessage().'</code>',
-        'lastId' => $step,
-        'numFiles' => $steps_total
+        'lastStepId' => $step,
+        'lastShopId' => $step_shop_index,
+        'stepsTotal' => $steps_total,
+        'stepShopIndex' => $step_shop_index
       ]);
         echo $stat;
         exit();
@@ -74,8 +87,9 @@ class InstallerController extends MainController
     $stat = json_encode([
       'error'   => false,
       'message' => 'Action '.$action.' done',
-      'lastId' => $step + 1,
-      'numFiles' => $steps_total
+      'lastStepId' => $step + 1,
+      'stepsTotal' => $steps_total,
+      'stepShopIndex' => $step_shop_index
     ]);
     echo $stat;
     return true;

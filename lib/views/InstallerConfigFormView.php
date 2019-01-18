@@ -30,7 +30,7 @@ class InstallerConfigFormView extends View
         # 'web_root_url' => 'localhost',
         # 'presta_source_dir' => '',
         # 'presta_version' => '1.7.4.4',
-        # 'shop_index' => 0
+        # 'first_shop_index' => 0
         $vs   = [];
         $vs[] = new NumberView(array(
             'name' => 'number_of_installations',

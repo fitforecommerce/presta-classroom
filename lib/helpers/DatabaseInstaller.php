@@ -18,35 +18,38 @@ class DatabaseInstaller {
 	}
 	public function run()
 	{
-    $this->create_databases();
-    $this->create_users();
+    $this->create_database();
+    $this->create_user();
     return $this->status();
 	}
-  private function create_databases()
+  private function create_database()
   {
     $stats = [];
-    $fi = $this->first_shop_index();
-    for ($i = $fi; $i < $fi + $this->config->get('number_of_installations'); $i++) {
-      $dbname = $this->db_name_for_index($i);
-      $q = "CREATE DATABASE IF NOT EXISTS $dbname";
-      $stats[] = $this->db->rawQuery($q);
-    }
+    $i = $this->config->get('stepShopIndex');
+    $dbname = $this->db_name_for_index($i);
+    $q = "CREATE DATABASE IF NOT EXISTS $dbname";
+    error_log("DatabaseInstaller::create_database");
+    error_log("\t$q");
+    $stats[] = $this->db->rawQuery($q);
     error_log("DatabaseInstaller::create_databases stats: ".print_r($stats, true));
     return $stats;
   }
-  private function create_users()
+  private function create_user()
   {
     $stats = [];
-    $fi = $this->first_shop_index();
-    for ($i = $fi; $i < $fi + $this->config->get('number_of_installations'); $i++) {
-      $dbname = $this->db_name_for_index($i);
-      $new_pwd = $this->random_password();
-      $ql = "CREATE USER '$dbname'@'localhost' IDENTIFIED BY '$new_pwd'; ";
-      $qe = "CREATE USER '$dbname'@'%' IDENTIFIED BY '$new_pwd'; ";
-      $stats[$i]['ql'] = $this->db->rawQuery($ql);
-      $stats[$i]['qe'] = $this->db->rawQuery($qe);
-      $stats[$i]['pw'] = $new_pwd;
-    }
+    $i = $this->config->get('stepShopIndex');
+    $dbname = $this->db_name_for_index($i);
+    $new_pwd = $this->random_password();
+    $ql = "CREATE USER '$dbname'@'localhost' IDENTIFIED BY '$new_pwd'; ";
+    $qe = "CREATE USER '$dbname'@'%' IDENTIFIED BY '$new_pwd'; ";
+    error_log("DatabaseInstaller::create_database");
+    error_log("\t$ql");
+    error_log("\t$qe");
+
+    $stats['ql'] = $this->db->rawQuery($ql);
+    $stats['qe'] = $this->db->rawQuery($qe);
+    $stats['pw'] = $new_pwd;
+
     error_log("DatabaseInstaller::create_databases stats: ".print_r($stats, true));
     return $stats;
   }
