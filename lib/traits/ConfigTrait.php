@@ -9,7 +9,7 @@ trait ConfigTrait {
     {
         return realpath(dirname(__FILE__)."/../..")."/public";
     }
-    protected function appconfig($key)
+    public function appconfig($key)
     {
         if($key == 'presta_versions_download_dir' || $key == 'shops_install_dir') {
             return $this->publicdir().$this->appconfigdata()[$key];

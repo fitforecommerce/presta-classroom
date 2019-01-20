@@ -13,11 +13,7 @@ class Installer {
     }
 
     $this->config = $nconfig;
-		$this->fs = new FileHelper();
-	}
-	public function run()
-	{
-    throw new Exception("Deprecated function Installer::run called", 1);
+    $this->fs = new FileHelper();
 	}
 
   #
@@ -36,6 +32,7 @@ class Installer {
   }
   public function unzip_src()
   {
+    if($this->config->get('step_shop_index') > 1) return true;
     ini_set('max_execution_time', 60);
 
     error_log("\n\nInstaller::extract_installers()");
@@ -56,43 +53,41 @@ class Installer {
 		$this->check_target_dir();
 		$this->create_dirs($this->config->get('server_path'));
 
+    $fi = $this->config->get('first_shop_index');
+    $i = $this->config->get('step_shop_index');
+
     # Start with the second shop, as the first one was
     # already created when unzipping the installer!
-    $fi = $this->first_shop_index();
-    error_log("Installer::copy_folders: loop from ".($fi+1)." to < ".($fi + $this->config->get('number_of_installations')));
+    if($i==1) return true;
 
-		for ($i = $fi + 1; $i < $fi + $this->config->get('number_of_installations'); $i++) { 
-			if(!$this->fs->system_xcopy($this->server_path_for_shop($fi), $this->server_path_for_shop($i))) {
-        error_log("Installer::copy_folders: received error when copying ".$this->server_path_for_shop($fi)." -> ".$this->server_path_for_shop($i));
-				$this->set_status_message("<p>Error copying ".$this->server_path_for_shop($fi)." -> ".$this->server_path_for_shop($i)."</p>");
-				$this->set_status_code(MainController::ERROR);
-			  return false;
-			}
-		};
+		if(!$this->fs->system_xcopy($this->server_path_for_shop($fi), $this->server_path_for_shop($i))) {
+      error_log("Installer::copy_folders: received error when copying ".$this->server_path_for_shop($fi)." -> ".$this->server_path_for_shop($i));
+			$this->set_status_message("<p>Error copying ".$this->server_path_for_shop($fi)." -> ".$this->server_path_for_shop($i)."</p>");
+			$this->set_status_code(MainController::ERROR);
+		  return false;
+		}
+
 		$this->append_status_message("Successfully unzipped the installers.");
 		$this->set_status_code(MainController::SUCCESS);
 		return true;
 	}
 	public function run_installers()
 	{
-    $fi = $this->first_shop_index();
-		for ($i=$fi; $i < $fi + $this->config->get('number_of_installations'); $i++) {
-			$tmp_conf  = $this->config;
-			$tmp_conf->set('server_path', $this->server_path_for_shop($i));
-			$tmp_conf->set('shop_index', $i);
+    $i = $this->config->get('step_shop_index');
 
-			$tmp_pcli = new PrestaCliInstallerRunner($tmp_conf);
-			$tmp_pcli->run();
-			$this->append_status_message($tmp_pcli->status_message());
-		}
+		$tmp_conf  = $this->config;
+		$tmp_conf->set('server_path', $this->server_path_for_shop($i));
+		$tmp_conf->set('shop_index', $i);
+
+		$tmp_pcli = new PrestaCliInstallerRunner($tmp_conf);
+		$tmp_pcli->run();
+		$this->append_status_message($tmp_pcli->status_message());
 	}
   public function cleanup()
   {
-    $fi = $this->first_shop_index();
-		for ($i = $fi; $i < $fi + $this->config->get('number_of_installations'); $i++) {
-			$this->fs->remove($this->server_path_for_shop($i).'/install');
-      $this->fs->rename($this->server_path_for_shop($i).'/admin', $this->server_path_for_shop($i).'/admin123');
-		}
+    $i = $this->config->get('step_shop_index');
+		$this->fs->remove($this->server_path_for_shop($i).'/install');
+    $this->fs->rename($this->server_path_for_shop($i).'/admin', $this->server_path_for_shop($i).'/admin123');
   }
 	private function check_target_dir()
 	{
@@ -107,13 +102,13 @@ class Installer {
 	}
 	private function create_dirs()
 	{
+    $i = $this->config->get('step_shop_index');
     # Start with the second shop, as the first one was
     # already created when unzipping the installer!
-    $fi = $this->first_shop_index();
-		for ($i = $fi + 1; $i < $fi + $this->config->get('number_of_installations'); $i++) { 
-			$this->is_overwritable_target($this->server_path_for_shop($i));
-			$this->create_dir($this->server_path_for_shop($i), $this->overwrite_targets());
-		};
+    if($i==1) return true;
+		$this->is_overwritable_target($this->server_path_for_shop($i));
+		$this->create_dir($this->server_path_for_shop($i), $this->overwrite_targets());
+
 		$this->append_status_message("Successfully created the directories.");
 		$this->set_status_code(MainController::SUCCESS);
 	}

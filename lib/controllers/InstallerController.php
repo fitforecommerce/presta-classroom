@@ -43,7 +43,7 @@ class InstallerController extends MainController
     # register_shutdown_function('fatalErrorShutdownHandler');
 
     global $_POST;
-    error_log('InstallerController::ajax_execute(): ' . print_r($_POST, true));
+    # error_log('InstallerController::ajax_execute(): ' . print_r($_POST, true));
     if(function_exists('xdebug_disable')){
       xdebug_disable();
     }
@@ -52,25 +52,31 @@ class InstallerController extends MainController
       $this->installer_config()->set_from_post('installer_config');
       $step = $_POST['stepId'];
       $step_shop_index = $_POST['stepShopIndex'];
-      $steps_total = count($this->install_steps()); # * $this->installer_config()->get('number_of_installations');
+      $steps_total = count($this->install_steps());
+
+      $this->installer_config()->set('step_shop_index', $_POST['stepShopIndex']);
+      $this->installer_config()->set('steps_total', $steps_total);
+
+      error_log('InstallerController::ajax_execute(): ' . print_r($this->installer_config(), true));
+
       $action = $this->install_steps()[$step]['action'];
       error_log("InstallerController:: execute action -> '$action'");
 
-      if($action!='setup_db') {
-        $stat = json_encode([
-          'error'   => false,
-          'message' => 'Action '.$action.' done',
-          'lastStepId' => $step + 1,
-          'stepsTotal' => $steps_total,
-          'stepShopIndex' => $step_shop_index
-        ]);
-        echo $stat;
-        return true;
-      }
+      # if($action!='setup_db') {
+      #   $stat = json_encode([
+      #     'error'   => false,
+      #     'message' => 'Action '.$action.' done',
+      #     'lastStepId' => $step + 1,
+      #     'stepsTotal' => $steps_total,
+      #     'stepShopIndex' => $step_shop_index
+      #   ]);
+      #   echo $stat;
+      #   return true;
+      # }
 
       error_log('InstallerController::ajax_execute(): installer_config ' . print_r($this->installer_config(), true));
       $installer = new Installer($this->installer_config());
-      $installer->$action($step_shop_index);
+      $installer->$action();
     } catch (Exception $e) {
       $stat = json_encode([
         'error'   => true,
@@ -106,26 +112,26 @@ class InstallerController extends MainController
         'ui_hint' => '',
         'action' => 'setup_db'
       ],
-      [ 'ui_string' => 'Make sure directories exist',
+      [ 'ui_string' => 'Make sure the shop directory exists',
         'ui_hint' => '',
         'action' => 'assert_dirs'
       ],
-      [ 'ui_string' => 'Unzip the installer',
-        'ui_hint' => 'This step might take a few minutes to complete…',
-        'action' => 'unzip_src'
-      ],
-      [ 'ui_string' => 'Copy shop folders',
-        'ui_hint' => 'This step might take a few minutes to complete…',
-        'action' => 'copy_folders'
-      ],
+      # [ 'ui_string' => 'Unzip the installer',
+      #   'ui_hint' => 'This step might take a few minutes to complete…',
+      #   'action' => 'unzip_src'
+      # ],
+      # [ 'ui_string' => 'Copy shop folders',
+      #   'ui_hint' => 'This step might take a few minutes to complete…',
+      #   'action' => 'copy_folders'
+      # ],
       [ 'ui_string' => 'Run the Prestashop installers',
         'ui_hint' => 'This step might take a few minutes to complete…',
         'action' => 'run_installers'
       ],
-      [ 'ui_string' => 'Clean up the installation files',
-        'ui_hint' => 'This step is not yet implemented! Remove install dir and rename admin folder',
-        'action' => 'cleanup'
-      ]
+      # [ 'ui_string' => 'Clean up the installation files',
+      #   'ui_hint' => 'This step is not yet implemented! Remove install dir and rename admin folder',
+      #   'action' => 'cleanup'
+      # ]
     );
   }
   private function install_jssource()
