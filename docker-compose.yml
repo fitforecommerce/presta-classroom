@@ -1,9 +1,13 @@
 # see https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php-apache-dev.html
 
+# see for connecting php-cli with mysql
+# https://stackoverflow.com/questions/39678099/docker-compose-php-fpm-nginx-mysql-and-use-wp-cli-on-nginx
 version: '3'
 services:
     apache2:
         build: ./phpdocker/php-apache-dev
+        env_file:
+            - ".env"
         volumes:
             - .:/app
         ports:
@@ -23,7 +27,7 @@ services:
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         ports:
-          - "8989:3306"
+          - "3306"
         volumes:
           - ./data/db/mysql:/var/lib/mysql
     myadmin:
