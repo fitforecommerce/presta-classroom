@@ -9,7 +9,8 @@ class InstallerConfigFormView extends View
     }
     public function to_s()
     {
-        $rv  = '<form action="/install/execute" method="POST">';
+      print_r($this->config);
+        $rv  = '<form action="'.$this->config->get('base_path').'/install/execute" method="POST">';
         foreach ($this->setup_views() as $v) {
             $rv .= $v->to_s();
         }
