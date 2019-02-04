@@ -4,7 +4,7 @@
 {/block}
 {block name=content}
   <div id="spinner">
-    <img src="/public/assets/img/loader.gif">
+    <img src="{$baseurl}/public/assets/img/loader.gif">
   </div>
 
   <div id="progressContainer">

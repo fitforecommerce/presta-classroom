@@ -4,7 +4,7 @@
 {/block}
 
 {block name=content}
-  <form method="POST" action="/public/login/validate">
+  <form method="POST" action="{$baseurl}/public/login/validate">
     <div class="form-group">
         <label for="email">Email</label>
         <input type="email" class="form-control" id="email" name="email" aria-describedby="email" placeholder="Enter email">
