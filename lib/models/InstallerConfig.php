@@ -30,7 +30,7 @@ class InstallerConfig
   }
   public function db_name_for_index($i)
   {
-    return 'shops_'.$i;
+    return $this->appconfigdata()['dbconfig']['database'].'_shop_'.$i;
   }
 }
 ?>
