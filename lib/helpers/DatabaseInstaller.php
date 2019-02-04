@@ -22,6 +22,8 @@ class DatabaseInstaller {
   private function create_database()
   {
     $stats = [];
+    $dberror = false;
+
     $i = $this->config->get('step_shop_index');
     $dbname = $this->db_name_for_index($i);
     $new_pwd = $this->random_password();
@@ -37,12 +39,20 @@ class DatabaseInstaller {
     error_log("\t$qe");
 
     foreach ($q as $rq) {
-      $stats[] = $this->db->rawQuery($rq);
+      $this->db->rawQuery($rq);
+      if($stats[] = $this->db->getLastError()) {
+        $dberror = true;
+      }
     }
     $stats['user']      = $dbname;
     $stats['password']  = $new_pwd;
 
     error_log("DatabaseInstaller::create_databases stats: ".print_r($stats, true));
+    if($dberror) {
+      $errstr  = "Error Processing database requests:\n";
+      $errstr .= implode("\n", $stats);
+      throw new Exception($errstr, 1);
+    }
     return $stats;
   }
   private function first_shop_index()
