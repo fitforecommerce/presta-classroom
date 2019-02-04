@@ -80,7 +80,7 @@ class InstallerController extends MainController
     } catch (Exception $e) {
       $stat = json_encode([
         'error'   => true,
-        'message' => '<p>Error in step '.$step.': <code>'.$e->getMessage().'</code>',
+        'message' => '<p>Error in step '.$step.': '.nl2br($e->getMessage()).'',
         'lastStepId' => $step,
         'lastShopId' => $step_shop_index,
         'stepsTotal' => $steps_total,
@@ -166,6 +166,10 @@ class InstallerController extends MainController
     $ic->set(
       'downloaded_versions',
       $this->versions_choice()
+    );
+    $ic->set(
+      'base_path',
+      $this->base_path()
     );
     $this->installer_config = $ic;
     return $this->installer_config;
