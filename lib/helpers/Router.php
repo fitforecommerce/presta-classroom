@@ -69,16 +69,16 @@ class Router
         if(!isset($this->request_parser)) $this->request_parser = new RequestParser($this->wwwpath, $this->route());
         return $this->request_parser;
     }
-    private function base_path()
+    public function base_path()
     {
         if(!isset($this->base_path)) {
-            $this->base_path = preg_replace('/\//', '\/', $this->yaml_routes()['base_path']);
+            $this->base_path = $this->appconfig('webserver')['urlpath'].'/public';
         }
         return $this->base_path;
     }
     private function route()
     {
-        $regex = '/^'.$this->base_path().'/';
+        $regex = '/^'.preg_replace('/\//', '\/', $this->base_path()).'/';
         $wp = preg_replace($regex, '', $this->wwwpath);
         foreach ($this->routes() as $route) {
             if($route->matches_request($wp)) {
