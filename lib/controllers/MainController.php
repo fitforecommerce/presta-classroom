@@ -91,6 +91,10 @@ class MainController
 		$this->action = $this->default_action();
 		$this->run();
 	}
+  public function base_path()
+  {
+    return $this->router()->base_path();
+  }
     private function router()
     {
         if(!isset($this->router)) $this->router = Router::from_request();
