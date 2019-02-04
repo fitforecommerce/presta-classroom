@@ -1,4 +1,8 @@
 ---
+webserver:
+  host: localhost
+  port: 80
+  urlpath: /prestaclassroom
 presta_versions_download_dir: /prestaversions
 shops_install_dir: /shops
 availableversions:

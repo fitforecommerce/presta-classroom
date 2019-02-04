@@ -5,11 +5,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <script type="text/javascript" src="/public/assets/js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="{$baseurl}/public/assets/js/jquery-3.3.1.min.js"></script>
 
-  <link href='/public/assets/css/bootstrap.css' rel='stylesheet' type='text/css'/>
-  <link href='/public/assets/css/font-awesome.min.css' rel='stylesheet' type='text/css'/>
-  <link href='/public/assets/css/main.css' rel='stylesheet' type='text/css'/>
+  <link href='{$baseurl}/public/assets/css/bootstrap.css' rel='stylesheet' type='text/css'/>
+  <link href='{$baseurl}/public/assets/css/font-awesome.min.css' rel='stylesheet' type='text/css'/>
+  <link href='{$baseurl}/public/assets/css/main.css' rel='stylesheet' type='text/css'/>
 
   <title>PrestaClassroom</title>
 
