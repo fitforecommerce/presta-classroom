@@ -9,12 +9,15 @@ class Router
     public static function from_request()
     {
         global $_SERVER;
-        # error_log("Router::from_request: ".$_SERVER['REQUEST_URI']);
+        error_log("Router::from_request: ".$_SERVER['REQUEST_URI']);
         return new Router($_SERVER['REQUEST_URI']);
     }
     function __construct($nrequest)
     {
-        $this->wwwpath = $nrequest;
+      # ignore the url basepath
+      $regex = '~^'.preg_quote($this->appconfig('webserver')['urlpath']).'~';
+      $nrequest = preg_replace($regex, '', $nrequest);
+      $this->wwwpath = $nrequest;
     }
 	public function run_controller()
 	{
