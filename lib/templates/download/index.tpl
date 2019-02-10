@@ -23,7 +23,7 @@
                 <i class="fa fa-download"></i>
               </a>
               &nbsp;
-              <a href="/download/{$d->version}">
+              <a href="{$baseurl}/download/{$d->version}">
                 Download
               </a>
             </button>
