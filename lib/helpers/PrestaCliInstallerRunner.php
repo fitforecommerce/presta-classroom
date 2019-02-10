@@ -82,7 +82,7 @@ class PrestaCliInstallerRunner {
 			'language' 		  => array('default' => 'en'),
 			'timezone' 		  => array('default' => 'localhost'),
 			'domain' 		    => array('default' => 'localhost'),
-			'db_server' 	  => array('default' => 'localhost'), # $dbconfig['host']),
+			'db_server' 	  => array('default' => 'localhost'),
 			'db_user' 		  => array('default' => $this->config->db_name_for_index($i)),
 			'db_password' 	=> array('default' => 'testclassroom'),
 			'db_name' 		  => array('default' => $this->config->db_name_for_index($i)),
