@@ -7,7 +7,7 @@ class RequestParser
 
     function __construct($nrequest, $nroute)
     {
-        # error_log("new parser with $nrequest - $nroute");
+        error_log("new parser with $nrequest - $nroute");
         $this->request  = $this->split($nrequest);
         $this->route    = $nroute;
     }

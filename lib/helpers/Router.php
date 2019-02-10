@@ -9,7 +9,6 @@ class Router
     public static function from_request()
     {
         global $_SERVER;
-        error_log("Router::from_request: ".$_SERVER['REQUEST_URI']);
         return new Router($_SERVER['REQUEST_URI']);
     }
     function __construct($nrequest)
@@ -69,7 +68,9 @@ class Router
     }
     public function request_parser()
     {
-        if(!isset($this->request_parser)) $this->request_parser = new RequestParser($this->wwwpath, $this->route());
+        if(!isset($this->request_parser)) {
+          $this->request_parser = new RequestParser($this->wwwpath, $this->route());
+        }
         return $this->request_parser;
     }
     public function base_path()
