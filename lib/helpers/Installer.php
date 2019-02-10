@@ -74,10 +74,13 @@ class Installer {
 	public function run_installers()
 	{
     $i = $this->config->get('step_shop_index');
+    $wwwconfig = $this->config->appconfig('webserver');
 
 		$tmp_conf  = $this->config;
+		$tmp_conf->set('base_uri', $this->base_uri_for_shop($i));
 		$tmp_conf->set('server_path', $this->server_path_for_shop($i));
 		$tmp_conf->set('shop_index', $i);
+    $tmp_conf->set('domain', $wwwconfig['host'].':'.$wwwconfig['port']);
 
 		$tmp_pcli = new PrestaCliInstallerRunner($tmp_conf);
 		$tmp_pcli->run();
@@ -100,6 +103,10 @@ class Installer {
 	{
 		return $this->config->get('server_path').'/shop'.$i;
 	}
+  private function base_uri_for_shop($i)
+  {
+    return $this->appconfig('webserver')['urlpath']."/public/shops/shop$i";
+  }
 	private function create_dirs()
 	{
     $i = $this->config->get('step_shop_index');
