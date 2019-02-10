@@ -74,6 +74,8 @@ class Installer {
 	public function run_installers()
 	{
     $i = $this->config->get('step_shop_index');
+    ini_set('max_execution_time', 300);
+
     $wwwconfig = $this->config->appconfig('webserver');
 
 		$tmp_conf  = $this->config;
@@ -84,7 +86,10 @@ class Installer {
 
 		$tmp_pcli = new PrestaCliInstallerRunner($tmp_conf);
 		$tmp_pcli->run();
+
 		$this->append_status_message($tmp_pcli->status_message());
+		$this->set_status_code(MainController::SUCCESS);
+    return true;
 	}
   public function cleanup()
   {
