@@ -2,7 +2,7 @@
 A platform for installing multiple Prestashop instances easily for use in school classrooms. This software is one of the results of the  project [Fit for E-Commerce](https://fitforecommerce.github.io) which is co-funded by the Erasmus+ programme of the European Union.
 
 ## Installation
-1. Download the current release from the release page
+1. Download the current release from the [release page](https://github.com/fitforecommerce/presta-classroom/releases)
 2. Edit the ```lib/config/config.yml``` to match your configuration
 3. Edit the ```.htaccess` file in the root folder and fix the base url
 
