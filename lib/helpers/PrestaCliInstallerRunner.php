@@ -16,14 +16,15 @@ class PrestaCliInstallerRunner {
 		# Warning
 		# When allowing user-supplied data to be passed to this function, use escapeshellarg() or escapeshellcmd() 
 		# to ensure that users cannot trick the system into executing arbitrary commands.
-    error_log("PrestaCliInstallerRunner::run ".$this->command());
     error_log('php '.$this->cli_script_path());
-    # system('php '.$this->cli_script_path());
-    # system('ping mysql:3306');
-    # system('which php');
-		system($this->command());
-		$this->set_status_message('PrestaCliInstallerRunner: Execute command for shop '.$this->config->get('shop_index').':<br><code>'.$this->command().'</code>');
-		$this->set_status_code(MainController::VOID);
+    error_log("PrestaCliInstallerRunner::run ".$this->command());
+
+		$out = shell_exec($this->command() . " 2>&1");
+    error_log("PrestaCliInstallerRunner:\n".$out);
+
+		$this->append_status_message($out);
+		$this->set_status_code(MainController::SUCCESS);
+
 		return true;
 	}
 	private function set_parameter($key, $nval)
@@ -44,7 +45,7 @@ class PrestaCliInstallerRunner {
 		$this->user_parameters = array();
 		foreach ($this->available_parameters() as $key => $d) {
       if($this->config->get($key)!=NULL) {
-        error_log("PrestaCliInstallerRunner::command update param $key to ".$this->config->get($key));
+        # error_log("PrestaCliInstallerRunner::command update param $key to ".$this->config->get($key));
         $this->set_parameter($key, $this->config->get($key));
       } else {
         $this->set_parameter($key, $d['default']);
@@ -62,6 +63,7 @@ class PrestaCliInstallerRunner {
 		$rv .= $this->cli_script_path().' ';
 		foreach($this->user_parameters() as $k => $v) {
 			$rv .= '--' . $k . '=' . escapeshellarg($v) .' ';
+      # $rv .= '--' . $k . '=' . $v .' ';
 		}
 		return $rv;
 	}
@@ -75,14 +77,16 @@ class PrestaCliInstallerRunner {
 	}
 	private function available_parameters()
 	{
+    $wwwconfig = $this->config->appconfig('webserver');
     $dbconfig = $this->config->appconfig('dbconfig');
+
     $i = $this->config->get('step_shop_index');
 		return array(
-			'step' 			    => array('default' => 'process'),
 			'language' 		  => array('default' => 'en'),
-			'timezone' 		  => array('default' => 'localhost'),
-			'domain' 		    => array('default' => 'localhost'),
-			'db_server' 	  => array('default' => 'localhost'),
+			'timezone' 		  => array('default' => 'Europe/Berlin'),
+			'domain' 		    => array('default' => $wwwconfig['host'].':'.$wwwconfig['port']),
+      'base_uri'      => array('default' => $wwwconfig['urlpath'].'/public/shops/shop1'),
+			'db_server' 	  => array('default' => $dbconfig['host']), # .':'.$dbconfig['port']),
 			'db_user' 		  => array('default' => $this->config->db_name_for_index($i)),
 			'db_password' 	=> array('default' => 'testclassroom'),
 			'db_name' 		  => array('default' => $this->config->db_name_for_index($i)),
