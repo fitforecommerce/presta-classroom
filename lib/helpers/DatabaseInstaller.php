@@ -28,10 +28,13 @@ class DatabaseInstaller {
     $dbname = $this->db_name_for_index($i);
     $new_pwd = $this->random_password();
     $q = [];
+    $q[] = "DROP DATABASE IF EXISTS $dbname";
     $q[] = "CREATE DATABASE IF NOT EXISTS $dbname";
-    $q[] = "CREATE USER '$dbname'@'localhost' IDENTIFIED BY '$new_pwd'; ";
-    $q[] = "CREATE USER '$dbname'@'%' IDENTIFIED BY '$new_pwd'; ";
-    $q[] = "GRANT ALL PRIVILEGES ON $dbname.* TO 'username'@'localhost';";
+    $q[] = "DROP USER IF EXISTS $dbname";
+    $q[] = "CREATE USER IF NOT EXISTS '$dbname'@'localhost' IDENTIFIED BY '$new_pwd'; ";
+    $q[] = "CREATE USER IF NOT EXISTS '$dbname'@'%' IDENTIFIED BY '$new_pwd'; ";
+    $q[] = "GRANT ALL PRIVILEGES ON $dbname.* TO '$dbname'@'%';";
+    $q[] = "GRANT ALL PRIVILEGES ON $dbname.* TO '$dbname'@'localhost';";
     $q[] = "FLUSH PRIVILEGES;";
 
     error_log("DatabaseInstaller::create_database");
