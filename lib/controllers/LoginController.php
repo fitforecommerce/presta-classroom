@@ -29,7 +29,7 @@ class LoginController extends MainController {
 	{
 		if($this->check_login_form()) {
             # error_log("LoginController::validate() User ".$this->logged_in_user->email."successfully logged in");
-			$fwd='Location: '.$this->base_path().'/dashboard';
+			$fwd='Location: '.$this->www_root_path().'/dashboard';
 			header($fwd);
 		} else {
             # error_log("LoginController::validate() User not logged in");
