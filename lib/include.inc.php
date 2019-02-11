@@ -13,6 +13,7 @@ require_once($d.'/traits/DataTrait.php');
 require_once($d.'/traits/ConfigTrait.php');
 require_once($d.'/traits/SmartyTrait.php');
 require_once($d.'/traits/StatusTrait.php');
+require_once($d.'/traits/RouterTrait.php');
 
 # Forms helpers
 require_once($d.'/views/forms/view.php');
