@@ -73,10 +73,28 @@ class Router
         }
         return $this->request_parser;
     }
+    public function www_root_path()
+    {
+      if(!isset($this->www_root_path)) {
+        $wc = $this->appconfig('webserver');
+        $this->www_root_path  = $wc['protocol'].'://';
+        $this->www_root_path .= $wc['host'];
+        if(strlen($wc['port'])>=4) {
+          $this->www_root_path .= ":".$wc['port'];
+        }
+        $this->www_root_path .= $this->base_path();
+      }
+      return $this->www_root_path;
+    }
     public function base_path()
     {
         if(!isset($this->base_path)) {
-            $this->base_path = $this->appconfig('webserver')['urlpath'].'/public';
+          $wc = $this->appconfig('webserver');
+          $this->base_path = "";
+          if(strlen($wc['urlpath'])>1) {
+            $this->base_path .= $wc['urlpath'];
+          }
+          $this->base_path .= '/public';
         }
         return $this->base_path;
     }

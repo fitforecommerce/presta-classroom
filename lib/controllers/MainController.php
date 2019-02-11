@@ -7,6 +7,7 @@ class MainController
     use ConfigTrait;
     use SmartyTrait;
     use MessageViewTrait;
+    use RouterTrait;
 
 	const VOID 		= 0;
 	const SUCCESS 	= 1;
@@ -91,15 +92,6 @@ class MainController
 		$this->action = $this->default_action();
 		$this->run();
 	}
-  public function base_path()
-  {
-    return $this->router()->base_path();
-  }
-    private function router()
-    {
-        if(!isset($this->router)) $this->router = Router::from_request();
-        return $this->router;
-    }
 	protected function action()
 	{
         if(isset($this->action)) return $this->action;
