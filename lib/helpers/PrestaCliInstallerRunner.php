@@ -3,6 +3,7 @@
 class PrestaCliInstallerRunner {
 
 	use StatusTrait;
+  use RouterTrait;
 
 	private $user_parameters;
 
@@ -75,6 +76,15 @@ class PrestaCliInstallerRunner {
 	{
 		return  array_key_exists($key, $this->available_parameters());
 	}
+  private function db_server()
+  {
+    $dbconfig = $this->config->appconfig('dbconfig');
+    $rv = $dbconfig['host'];
+    if(strlen($dbconfig['port']) >= 4) {
+      $rv .= ':'.$dbconfig['port'];
+    }
+    return $rv;
+  }
 	private function available_parameters()
 	{
     $wwwconfig = $this->config->appconfig('webserver');
@@ -86,7 +96,7 @@ class PrestaCliInstallerRunner {
 			'timezone' 		  => array('default' => 'Europe/Berlin'),
 			'domain' 		    => array('default' => $wwwconfig['host'].':'.$wwwconfig['port']),
       'base_uri'      => array('default' => $wwwconfig['urlpath'].'/public/shops/shop1'),
-			'db_server' 	  => array('default' => $dbconfig['host']), # .':'.$dbconfig['port']),
+			'db_server' 	  => array('default' => $this->db_server()),
 			'db_user' 		  => array('default' => $this->config->db_name_for_index($i)),
 			'db_password' 	=> array('default' => 'testclassroom'),
 			'db_name' 		  => array('default' => $this->config->db_name_for_index($i)),
