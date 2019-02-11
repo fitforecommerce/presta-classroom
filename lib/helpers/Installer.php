@@ -3,6 +3,7 @@ class Installer {
 
 	use StatusTrait;
   use ConfigTrait;
+  use RouterTrait;
 
 	private $config;
 
@@ -110,7 +111,7 @@ class Installer {
 	}
   private function base_uri_for_shop($i)
   {
-    return $this->appconfig('webserver')['urlpath']."/public/shops/shop$i";
+    return $this->base_path()."/shops/shop$i";
   }
 	private function create_dirs()
 	{
