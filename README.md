@@ -1,19 +1,28 @@
 # PrestaClassroom
 A platform for installing multiple Prestashop instances easily for use in school classrooms. This software is one of the results of the  project [Fit for E-Commerce](https://fitforecommerce.github.io) which is co-funded by the Erasmus+ programme of the European Union.
 
-## Installation
-1. Download the current release from the [release page](https://github.com/fitforecommerce/presta-classroom/releases)
-2. Edit the ```lib/config/config.yml``` to match your configuration
-3. Edit the ```.htaccess` file in the root folder and fix the base url
+## Installation with Docker
+1. Make sure you have got [Docker](https://www.docker.com/get-started) installed.
+2. Download the current release of Presta-Classroom from the [release page](https://github.com/fitforecommerce/presta-classroom/releases)
+2. Open the command line and go to the presta-classroom directory
+4. Enter the command ``docker-compose up``
+5. You should now be running a webserver. Point your browser to localhost:8000 to access the Presta-Classroom installation.
 
-## Usage
+## Installation on an Apache Webserver
+1. Download the current release from the [release page](https://github.com/fitforecommerce/presta-classroom/releases)
+2. Upload the directory to your webserver
+2. Edit the ```lib/config/config.yml``` to match your configuration
+3. Edit the ```.htaccess``` file in the root folder and fix the base url
+4. Open your browser and go to the server address
+
+## Presta-Classroom Usage
 1. Open the root url of your PrestaClassroom installation.
 2. Download a Prestashop version for installation via the Download button.
 3. Configure the installation under via the Install button.
 4. Press Start and wait while the installation progresses.
 
 ## Links
-* Fixing issues with MAMP and cli installer: https://stackoverflow.com/questions/22188026/sqlstatehy000-2002-no-such-file-or-directory
+* Fixing issues with MAMP and cli installer: https://stackoverflow.com/questions/22188026/sqlstatehy000-2002-no-such-file-or-directory: ```sudo mkdir /private/var/mysql; cd /private/var/mysql && sudo ln -s /Applications/MAMP/tmp/mysql/mysql.sock`
 
 * Add access rights to user ```GRANT CREATE USER, RELOAD on *.* TO presta WITH GRANT OPTION; GRANT CREATE USER, RELOAD on *.* TO presta@localhost WITH GRANT OPTION; flush privileges;```
 
