@@ -21,14 +21,12 @@ A platform for installing multiple Prestashop instances easily for use in school
 3. Configure the installation under via the Install button.
 4. Press Start and wait while the installation progresses.
 
-## Links
+## Notes for Developers (just ignore)
 * Fixing issues with MAMP and cli installer: https://stackoverflow.com/questions/22188026/sqlstatehy000-2002-no-such-file-or-directory: ```sudo mkdir /private/var/mysql; cd /private/var/mysql && sudo ln -s /Applications/MAMP/tmp/mysql/mysql.sock`
 
 * Add access rights to user ```GRANT CREATE USER, RELOAD on *.* TO presta WITH GRANT OPTION; GRANT CREATE USER, RELOAD on *.* TO presta@localhost WITH GRANT OPTION; flush privileges;```
 
 * Info on installing Prestashop modules from the CLI: https://github.com/nenes25/prestashop_eiinstallmodulescli/blob/master/README.md
-
-## Known Issues
 * Error 500 when running Prestashop Installer on MAMP server: ```[Sun Feb 10 15:28:54 2019] [error] [client ::1] FastCGI: comm with server "/Applications/MAMP/fcgi-bin/php7.2.8.fcgi" aborted: idle timeout (30 sec), referer: http://localhost:8888/classroom/public/install/execute
 [Sun Feb 10 15:28:54 2019] [error] [client ::1] FastCGI: incomplete headers (0 bytes) received from server "/Applications/MAMP/fcgi-bin/php7.2.8.fcgi", referer: http://localhost:8888/classroom/public/install/execute``` read here for fix: https://stackoverflow.com/questions/24715426/how-do-you-increase-the-apache-fastcgi-timeout-on-mamp-mamp-pro
 
