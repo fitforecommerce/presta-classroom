@@ -19,7 +19,7 @@ trait SmartyTrait {
     protected function webroot()
     {
       $s = $this->appconfigdata()['webserver'];
-      return 'http://'.$s['host'].':'.$s['port'].$s['urlpath'];
+      return $s['protocol'].'://'.$s['host'].':'.$s['port'].$s['urlpath'];
     }
     protected function templatedir()
     {
