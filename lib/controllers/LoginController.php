@@ -28,7 +28,7 @@ class LoginController extends MainController {
 	public function validate()
 	{
 		if($this->check_login_form()) {
-            # error_log("LoginController::validate() User ".$this->logged_in_user->email."successfully logged in");
+      error_log($this->www_root_path().'/dashboard');
 			$fwd='Location: '.$this->www_root_path().'/dashboard';
 			header($fwd);
 		} else {
