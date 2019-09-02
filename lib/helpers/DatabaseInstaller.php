@@ -65,7 +65,7 @@ class DatabaseInstaller {
   private function setup_db()
   {
     $dbconfig = $this->appconfig('dbconfig');
-    $this->db = new MysqliDb ($dbconfig['host'], $dbconfig['user'], 
+    $this->db = new MysqliDb ($this->db_server(), $dbconfig['user'], 
       $dbconfig['password'], $dbconfig['database']);
   }
   private function db_name_for_index($i)
@@ -76,6 +76,15 @@ class DatabaseInstaller {
   {
     return 'testclassroom';
     return LoginController::createPassword(8);
+  }
+  private function db_server()
+  {
+    $dbconfig = $this->config->appconfig('dbconfig');
+    $rv = $dbconfig['host'];
+    if(strlen($dbconfig['port']) >= 4) {
+      $rv .= ':'.$dbconfig['port'];
+    }
+    return $rv;
   }
 }
 ?>
