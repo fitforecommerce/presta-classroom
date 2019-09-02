@@ -30,6 +30,10 @@ A platform for installing multiple Prestashop instances easily for use in school
 * Error 500 when running Prestashop Installer on MAMP server: ```[Sun Feb 10 15:28:54 2019] [error] [client ::1] FastCGI: comm with server "/Applications/MAMP/fcgi-bin/php7.2.8.fcgi" aborted: idle timeout (30 sec), referer: http://localhost:8888/classroom/public/install/execute
 [Sun Feb 10 15:28:54 2019] [error] [client ::1] FastCGI: incomplete headers (0 bytes) received from server "/Applications/MAMP/fcgi-bin/php7.2.8.fcgi", referer: http://localhost:8888/classroom/public/install/execute``` read here for fix: https://stackoverflow.com/questions/24715426/how-do-you-increase-the-apache-fastcgi-timeout-on-mamp-mamp-pro
 
+## Todo
+- [ ] Change User to allow login of multiple users
+- [ ] Catch errors if database connection is not working when running: the /configure action
+
 ## Disclaimer
 
 ![Co-funded by the Erasmus+ Programme of the European Union](https://fitforecommerce.github.io/img/co-funded-erasmus+.jpg)
